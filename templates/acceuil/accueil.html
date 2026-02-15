@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Accueil - K-Zone CMR{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/accueil.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container accueil-container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="h3">Bienvenue, <span style="color: #1e3a8a;">{{ user.first_name|default:user.username }}</span> !</h1>
+                    <p class="text-muted">Voici un aperçu de votre activité.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Carte Nombre de Clients -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header text-white" style="background-color: #009639;">
+                    <h5 class="card-title mb-0">Clients Actifs</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p class="display-4 fw-bold">{{ nombre_clients }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte Chiffre d'Affaires -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header text-white" style="background-color: #CE1126;">
+                    <h5 class="card-title mb-0">Chiffre d'Affaires (Mois)</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p class="display-4 fw-bold">{{ chiffre_affaires }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte Factures en Attente -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header text-white" style="background-color: #FCDD09; color: #333 !important;">
+                    <h5 class="card-title mb-0">Factures en Attente</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p class="display-4 fw-bold">{{ nombre_factures }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

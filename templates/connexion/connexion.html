@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Connexion - K-Zone CMR{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/connexion.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container connexion-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4" style="color: #1e3a8a;">
+                        <span style="color: #009639;">K-</span><span style="color: #CE1126;">Zone</span> <span style="color: #FCDD09;">CMR</span>
+                    </h2>
+                    <p class="text-center text-muted mb-4">Connectez-vous pour accéder à votre espace</p>
+                    
+                    <form method="post" action="{% url 'connexion:connexion' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.password.label_tag }}
+                            {{ form.password }}
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary" style="background-color: #009639; border-color: #009639;">Se connecter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

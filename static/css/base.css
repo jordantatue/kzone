@@ -1,0 +1,37 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+main {
+    flex: 1;
+}
+
+.footer {
+    background-color: #e9ecef;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Color overrides for Bootstrap buttons if needed */
+.btn-primary {
+    --bs-btn-bg: #1e3a8a;
+    --bs-btn-border-color: #1e3a8a;
+    --bs-btn-hover-bg: #162a6e;
+    --bs-btn-hover-border-color: #162a6e;
+}
+
+.btn-danger {
+    --bs-btn-bg: #CE1126;
+    --bs-btn-border-color: #CE1126;
+    --bs-btn-hover-bg: #a80e1f;
+    --bs-btn-hover-border-color: #a80e1f;
+}
+
+.btn-outline-danger {
+    --bs-btn-color: #CE1126;
+    --bs-btn-border-color: #CE1126;
+    --bs-btn-hover-bg: #CE1126;
+    --bs-btn-hover-color: #fff;
+}
