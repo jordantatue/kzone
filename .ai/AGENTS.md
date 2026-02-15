@@ -12,22 +12,21 @@
 
 ```
 kzone/
-├── .ai/                    # Instructions pour toi
-├── kzone/                  # Configuration Django
-├── apps/                   # Applications métier
-│   └── nom_app/
-│       ├── models.py       # Structure données
-│       ├── services.py     # OBLIGATOIRE - Logique métier
-│       ├── views.py        # CBV uniquement
-│       ├── forms.py        # Validation inputs
-│       ├── urls.py
-│       ├── admin.py
-│       ├── tests.py
-│       ├── templates/nom_app/
-│       └── static/nom_app/
-├── templates/              # Templates globaux
-├── static/                 # CSS/JS globaux
-└── media/                  # Uploads utilisateurs
+├── .ai/                           # Instructions pour toi
+├── kzone/                         # Configuration Django
+├── nom_app/                       # Applications métier
+│   ├── templates/nom_app/         # HTML associé à l'app
+│   ├── static/nom_app/            # CSS + JS associé à l'app
+│   ├── media/nom_app/             # Media de l'app
+│   ├── assets/nom_app/            # Assets spécifiques de l'app
+│   ├── models.py                  # Structure données
+│   ├── services.py                # OBLIGATOIRE - Logique métier
+│   ├── views.py                   # CBV uniquement
+│   ├── forms.py                   # Validation inputs
+│   ├── urls.py
+│   ├── admin.py
+│   └── tests.py
+└── assets/                        # Images globales (logos, etc.)
 ```
 
 ## Règles Fondamentales

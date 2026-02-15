@@ -1,0 +1,74 @@
+:root {
+    --color-cmr-green: #009639;
+    --color-cmr-gold: #FCDD09;
+    --color-cmr-red: #CE1126;
+    --color-cmr-text: #1e293b;
+    --color-cmr-offwhite: #f8fafc;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    color: var(--color-cmr-text);
+    background-color: var(--color-cmr-offwhite);
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.cmr-logo-text {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.cmr-logo-text__brand {
+    color: var(--color-cmr-green);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.cmr-logo-text__tag {
+    color: #b78c1f;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.btn-warning {
+    --bs-btn-bg: var(--color-cmr-gold);
+    --bs-btn-border-color: var(--color-cmr-gold);
+    --bs-btn-color: #111827;
+    --bs-btn-hover-bg: #ebcb0b;
+    --bs-btn-hover-border-color: #ebcb0b;
+    --bs-btn-active-bg: #d9bb0a;
+    --bs-btn-active-border-color: #d9bb0a;
+}
+
+.btn-success {
+    --bs-btn-bg: var(--color-cmr-green);
+    --bs-btn-border-color: var(--color-cmr-green);
+    --bs-btn-hover-bg: #007c2f;
+    --bs-btn-hover-border-color: #007c2f;
+    --bs-btn-active-bg: #006626;
+    --bs-btn-active-border-color: #006626;
+}
+
+.btn-outline-danger {
+    --bs-btn-color: var(--color-cmr-red);
+    --bs-btn-border-color: var(--color-cmr-red);
+    --bs-btn-hover-bg: var(--color-cmr-red);
+    --bs-btn-hover-border-color: var(--color-cmr-red);
+}
+
+.alert-danger {
+    --bs-alert-color: #7f1d1d;
+    --bs-alert-bg: #fee2e2;
+    --bs-alert-border-color: #fecaca;
+}

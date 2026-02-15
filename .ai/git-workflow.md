@@ -5,7 +5,7 @@
 
 ## Nomenclature des Branches
 
-Format strict : `[type]_[fonctionnalité]_[app]`
+Format strict : `[type]_[fonctionnalité]_[app]` (si beaucoup d'application on choisi le nom de celle qui est au coeur de la fonctionnalité)
 
 ### Types autorisés
 - `feat` : Nouvelle fonctionnalité
@@ -48,8 +48,8 @@ git checkout -b feat_paginationListe_clients
 ### 3. Développement
 Code en suivant les conventions de `.ai/AGENTS.md`.
 
-### 4. Commits fréquents
-
+### 4. Commits 
+Faits des commits des changements a la fin de chaque tâche en suivant le format suivant :
 Format des messages de commit :
 ```
 [TYPE] [App(s)] : Description claire
