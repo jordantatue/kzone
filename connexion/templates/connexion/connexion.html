@@ -10,18 +10,18 @@
 {% endblock %}
 
 {% block header %}
-<nav class="navbar bg-white border-bottom login-page__topbar">
-    <div class="container-fluid px-3 px-lg-4">
-        <a href="{% url 'acceuil:accueil' %}" class="btn btn-link text-decoration-none login-page__back-link" aria-label="Retour a l'accueil">
+<nav class="navbar bg-white border-bottom shadow-sm py-2">
+    <div class="container-fluid px-3 px-lg-4 align-items-center">
+        <a href="{% url 'acceuil:accueil' %}" class="btn btn-link text-success text-decoration-none d-inline-flex align-items-center justify-content-center p-0 login-page__back-link" aria-label="Retour a l'accueil">
             <i class="bi bi-arrow-left fs-3" aria-hidden="true"></i>
         </a>
-        <p class="login-page__topbar-copy mb-0 mx-auto">Le marche qui connecte les proches au Cameroun en un clic.</p>
+        <p class="mb-0 mx-auto fw-semibold text-cmr-text text-center small px-3 login-page__topbar-copy">Le marche qui connecte les commerces au Cameroun en un clic.</p>
         <span class="login-page__topbar-spacer" aria-hidden="true"></span>
     </div>
 </nav>
 {% endblock %}
 
-{% block main_class %}container-fluid p-0{% endblock %}
+{% block main_class %}container-fluid p-0 flex-grow-1{% endblock %}
 
 {% block footer %}{% endblock %}
 
@@ -35,13 +35,13 @@
     </aside>
 
     <section class="col-12 col-md-6 d-flex align-items-center justify-content-center py-4 px-3 px-lg-5">
-        <div class="card border-0 shadow-sm login-page__card">
+        <div class="card border-0 shadow-sm rounded-4 w-100 login-page__card">
             <div class="card-body p-4 p-lg-5">
                 <div class="text-center mb-4">
                     <img src="/assets/logo_cam_retail.png" alt="Cam-Retail Express" class="login-page__logo-img mb-3">
                 </div>
 
-                <h1 class="h2 fw-bold text-center login-page__title mb-2">Boostez vos ventes, partout au Cameroun.</h1>
+                <h1 class="h2 fw-bold text-center text-cmr-text mb-2">Boostez vos ventes, partout au Cameroun.</h1>
 
                 <form method="post" action="{% url 'connexion:connexion' %}">
                     {% csrf_token %}
@@ -61,7 +61,7 @@
                     <a href="#" class="text-decoration-none text-secondary">Facebook</a>
                 </div>
 
-                <div class="login-page__security d-flex align-items-center justify-content-center gap-2 small text-secondary">
+                <div class="d-flex align-items-center justify-content-center gap-2 small text-secondary border-top pt-3">
                     <i class="bi bi-shield-check fs-5" aria-hidden="true"></i>
                     <span>Paiement securise par Stripe, MTN Mobile Money et Orange Money</span>
                 </div>

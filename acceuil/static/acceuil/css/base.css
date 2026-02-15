@@ -6,39 +6,12 @@
     --color-cmr-offwhite: #f8fafc;
 }
 
-html,
-body {
-    min-height: 100%;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    color: var(--color-cmr-text);
+.bg-cmr-offwhite {
     background-color: var(--color-cmr-offwhite);
 }
 
-main {
-    flex: 1 0 auto;
-}
-
-.cmr-logo-text {
-    display: inline-flex;
-    flex-direction: column;
-    line-height: 1;
-}
-
-.cmr-logo-text__brand {
-    color: var(--color-cmr-green);
-    font-size: 1.35rem;
-    font-weight: 700;
-}
-
-.cmr-logo-text__tag {
-    color: #b78c1f;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+.text-cmr-text {
+    color: var(--color-cmr-text);
 }
 
 .btn-warning {
@@ -65,10 +38,4 @@ main {
     --bs-btn-border-color: var(--color-cmr-red);
     --bs-btn-hover-bg: var(--color-cmr-red);
     --bs-btn-hover-border-color: var(--color-cmr-red);
-}
-
-.alert-danger {
-    --bs-alert-color: #7f1d1d;
-    --bs-alert-bg: #fee2e2;
-    --bs-alert-border-color: #fecaca;
 }

@@ -2,30 +2,12 @@
     background: linear-gradient(135deg, #e5e7eb 0%, #cbd5e1 100%);
 }
 
-.login-page__topbar {
-    min-height: 76px;
-    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
-}
-
 .login-page__back-link {
-    color: #009639;
     min-width: 48px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
-
-.login-page__back-link:hover {
-    color: #006e2a;
 }
 
 .login-page__topbar-copy {
-    color: #1e293b;
-    font-weight: 600;
-    text-align: center;
-    font-size: 1rem;
-    padding: 0 1rem;
+    max-width: 520px;
 }
 
 .login-page__topbar-spacer {
@@ -33,7 +15,6 @@
 }
 
 .login-page__layout {
-    background-color: transparent;
     min-height: calc(100vh - 76px);
 }
 
@@ -57,26 +38,13 @@
 }
 
 .login-page__card {
-    width: 100%;
     max-width: 460px;
-    border-radius: 1rem;
-    background-color: #ffffff;
 }
 
 .login-page__logo-img {
     width: 190px;
     height: auto;
     object-fit: contain;
-}
-
-.login-page__title {
-    color: var(--color-cmr-text);
-    letter-spacing: -0.01em;
-}
-
-.login-page__subtitle {
-    color: #009639;
-    font-weight: 500;
 }
 
 .login-page .form-control {
@@ -87,11 +55,6 @@
 .login-page .form-control:focus {
     border-color: var(--color-cmr-green);
     box-shadow: 0 0 0 0.2rem rgba(0, 150, 57, 0.18);
-}
-
-.login-page__security {
-    border-top: 1px solid #e5e7eb;
-    padding-top: 1rem;
 }
 
 @media (max-width: 767.98px) {
@@ -105,10 +68,6 @@
 
     .login-page__topbar-copy {
         font-size: 0.9rem;
-    }
-
-    .login-page__back-link {
-        min-width: auto;
     }
 
     .login-page__topbar-spacer {

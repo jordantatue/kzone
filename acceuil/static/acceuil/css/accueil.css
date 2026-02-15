@@ -2,12 +2,6 @@
     background-color: #eef2f7;
 }
 
-.home-page__navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1020;
-}
-
 .home-page__logo-img {
     width: 120px;
     height: auto;
@@ -18,31 +12,7 @@
     max-width: 520px;
 }
 
-.home-page__icon-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.9rem;
-    padding: 0.35rem 0.45rem;
-}
-
-.home-page__icon-link--locked {
-    opacity: 0.75;
-}
-
-.home-page__icon-link--locked:hover {
-    opacity: 1;
-}
-
-.home-page__sidebar .list-group-item {
-    border: 0;
-    border-radius: 0.75rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #0f5132;
-}
-
-.home-page__sidebar .list-group-item.active {
+.home-page__sidebar-active {
     background-color: #dcfce7;
     color: #14532d;
 }
@@ -58,8 +28,6 @@
 }
 
 .home-page__product-card {
-    border-radius: 0.85rem;
-    overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
