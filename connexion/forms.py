@@ -12,7 +12,7 @@ class ConnexionForm(forms.Form):
         required=True,
         widget=forms.EmailInput(attrs={
             'placeholder': 'Adresse e-mail',
-            'class': 'form-control',
+            'class': 'form-control form-control-lg',
             'id': 'email',
         })
     )
@@ -20,7 +20,7 @@ class ConnexionForm(forms.Form):
         required=True,
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Mot de passe',
-            'class': 'form-control',
+            'class': 'form-control form-control-lg',
             'id': 'password',
         })
     )
