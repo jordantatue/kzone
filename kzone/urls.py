@@ -25,3 +25,6 @@ urlpatterns = [
     path('', include('acceuil.urls')),
     path('connexion/', include('connexion.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.ASSETS_URL, document_root=settings.ASSETS_ROOT)

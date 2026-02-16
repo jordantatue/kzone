@@ -1,0 +1,180 @@
+{% extends 'acceuil/base.html' %}
+{% load static %}
+
+{% block title %}Accueil | Cam-Retail Express{% endblock %}
+
+{% block body_class %}home-page{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'acceuil/css/accueil.css' %}">
+{% endblock %}
+
+{% block header %}
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container-fluid px-3 px-lg-4">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'acceuil:accueil' %}">
+            <img src="/assets/logo_cam_retail.png" alt="Cam-Retail Express" class="home-page__logo-img">
+        </a>
+
+        <button class="btn btn-outline-success d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#homeSidebar" aria-controls="homeSidebar">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <form class="d-none d-lg-flex flex-grow-1 mx-4">
+            <div class="input-group home-page__search">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                <input type="search" class="form-control border-start-0" placeholder="Rechercher un produit, un panier...">
+            </div>
+        </form>
+
+        <div class="d-flex align-items-center gap-2 gap-lg-3 ms-auto">
+            {% if user.is_authenticated %}
+                <a href="#" class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1">
+                    <i class="bi bi-person fs-5"></i>
+                    <span class="d-none d-xl-inline">Mon compte</span>
+                </a>
+                <a href="#" class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1">
+                    <i class="bi bi-receipt fs-5"></i>
+                    <span class="d-none d-xl-inline">Suivi de commande</span>
+                </a>
+                <a href="#" class="btn btn-link text-decoration-none text-dark position-relative d-inline-flex align-items-center gap-2 small py-1 px-1">
+                    <i class="bi bi-cart3 fs-5"></i>
+                    <span class="d-none d-xl-inline">Panier</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">3</span>
+                </a>
+                <a href="{% url 'connexion:deconnexion' %}" class="btn btn-outline-danger btn-sm">Deconnexion</a>
+            {% else %}
+                <a href="{% url 'connexion:connexion' %}?next={% url 'acceuil:accueil' %}" class="btn btn-link text-decoration-none text-muted d-inline-flex align-items-center gap-2 small py-1 px-1 opacity-75">
+                    <i class="bi bi-person-lock fs-5"></i>
+                    <span class="d-none d-xl-inline">Mon compte</span>
+                </a>
+                <a href="{% url 'connexion:connexion' %}?next={% url 'acceuil:accueil' %}" class="btn btn-link text-decoration-none text-muted d-inline-flex align-items-center gap-2 small py-1 px-1 opacity-75">
+                    <i class="bi bi-receipt-cutoff fs-5"></i>
+                    <span class="d-none d-xl-inline">Suivi de commande</span>
+                </a>
+                <a href="{% url 'connexion:connexion' %}?next={% url 'acceuil:accueil' %}" class="btn btn-link text-decoration-none text-muted position-relative d-inline-flex align-items-center gap-2 small py-1 px-1 opacity-75">
+                    <i class="bi bi-cart-x fs-5"></i>
+                    <span class="d-none d-xl-inline">Panier</span>
+                </a>
+                <a href="{% url 'connexion:connexion' %}" class="btn btn-success btn-sm">Connexion</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block main_class %}container-fluid px-3 px-lg-4 py-3 flex-grow-1{% endblock %}
+
+{% block content %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="homeSidebar" aria-labelledby="homeSidebarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="homeSidebarLabel">Categories</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold home-page__sidebar-active" href="#">Marche Frais</a>
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Epicerie</a>
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Mode et Beaute</a>
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Promotions</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <aside class="col-lg-2 d-none d-lg-block">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold home-page__sidebar-active" href="#">Marche Frais</a>
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Epicerie</a>
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Maison</a>
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Mode et Beaute</a>
+            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Promotions</a>
+        </div>
+    </aside>
+
+    <section class="col-12 col-lg-10">
+        <div class="card border-0 overflow-hidden home-page__hero mb-3">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-7 p-4 p-lg-5">
+                    <h1 class="display-6 fw-bold text-white mb-2">Envoyez de l'amour au Cameroun</h1>
+                    <p class="fs-3 fw-semibold text-white mb-0">Livraison en 24h</p>
+                </div>
+                <div class="col-md-5">
+                    <img
+                        src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80"
+                        class="img-fluid home-page__hero-image"
+                        alt="Produits frais">
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h4 fw-bold mb-0">Selection du jour</h2>
+            <span class="badge bg-success-subtle text-success-emphasis">6 produits</span>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-sm-6 col-xl-4">
+                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
+                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Panier menagere">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">Panier Menagere Mensuel</h3>
+                        <p class="text-muted mb-1">Frais et essentiels</p>
+                        <p class="fw-semibold mb-0">15 000 FCFA / 25 EUR</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
+                    <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Gamme beaute">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">Gamme Beaute Naturelle</h3>
+                        <p class="text-muted mb-1">Soin premium</p>
+                        <p class="fw-semibold mb-0">20 000 FCFA / 23 EUR</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
+                    <img src="https://images.unsplash.com/photo-1583732236041-91c6bc0ca607?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Materiaux">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">Sac de Ciment et Materiaux</h3>
+                        <p class="text-muted mb-1">Construction</p>
+                        <p class="fw-semibold mb-0">20 000 FCFA / 33 EUR</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
+                    <img src="https://images.unsplash.com/photo-1601758003122-53c40e686a19?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Produit epicerie">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">Epicerie Familiale</h3>
+                        <p class="text-muted mb-1">Produits de base</p>
+                        <p class="fw-semibold mb-0">15 000 FCFA / 13 EUR</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Cafe camerounais">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">Pack Cafe Camerounais</h3>
+                        <p class="text-muted mb-1">Edition locale</p>
+                        <p class="fw-semibold mb-0">46 000 FCFA / 10 EUR</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
+                    <img src="https://images.unsplash.com/photo-1627483298606-cf7a2f4f67ab?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Jus de bissap">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">Jus de Bissap Naturelle</h3>
+                        <p class="text-muted mb-1">Production artisanale</p>
+                        <p class="fw-semibold mb-0">85 000 FCFA / 10 EUR</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

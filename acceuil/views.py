@@ -1,7 +1,5 @@
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-class AccueilView(LoginRequiredMixin, TemplateView):
+class AccueilView(TemplateView):
     """
     Affiche la page d'accueil protégée après connexion.
     """
