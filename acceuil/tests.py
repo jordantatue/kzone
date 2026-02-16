@@ -27,12 +27,29 @@ class AccueilViewTests(TestCase):
 
     def test_accueil_shows_connexion_button_for_anonymous_user(self):
         response = self.client.get(self.accueil_url)
+        self.assertContains(response, "Mon compte")
         self.assertContains(response, "Connexion")
-        self.assertNotContains(response, "Deconnexion")
         self.assertContains(response, reverse("connexion:connexion"))
+        self.assertNotContains(response, 'btn btn-outline-danger btn-sm')
 
     def test_accueil_shows_deconnexion_button_for_authenticated_user(self):
         self.client.force_login(self.user)
         response = self.client.get(self.accueil_url)
         self.assertContains(response, "Deconnexion")
-        self.assertNotContains(response, "Connexion")
+        self.assertContains(response, reverse("connexion:deconnexion"))
+        self.assertNotContains(response, 'btn btn-outline-danger btn-sm')
+
+    def test_accueil_has_mobile_burger_menu_and_offcanvas(self):
+        response = self.client.get(self.accueil_url)
+        self.assertContains(response, 'aria-label="Ouvrir le menu"')
+        self.assertContains(response, 'id="mobileNavMenu"')
+
+    def test_accueil_has_favoris_messages_and_panier_icons(self):
+        response = self.client.get(self.accueil_url)
+        self.assertContains(response, "bi-heart")
+        self.assertContains(response, "bi-envelope")
+        self.assertContains(response, "bi-cart3")
+
+    def test_accueil_has_desktop_centered_search_input(self):
+        response = self.client.get(self.accueil_url)
+        self.assertContains(response, 'id="desktop-search"')

@@ -3,7 +3,7 @@
 
 {% block title %}Connexion | Cam-Retail Express{% endblock %}
 
-{% block body_class %}login-page{% endblock %}
+{% block body_class %}bg-body-secondary{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'connexion/css/connexion.css' %}">
@@ -11,12 +11,20 @@
 
 {% block header %}
 <nav class="navbar bg-white border-bottom shadow-sm py-2">
-    <div class="container-fluid px-3 px-lg-4 align-items-center">
-        <a href="{% url 'acceuil:accueil' %}" class="btn btn-link text-success text-decoration-none d-inline-flex align-items-center justify-content-center p-0 login-page__back-link" aria-label="Retour a l'accueil">
-            <i class="bi bi-arrow-left fs-3" aria-hidden="true"></i>
-        </a>
-        <p class="mb-0 mx-auto fw-semibold text-cmr-text text-center small px-3 login-page__topbar-copy">Le marche qui connecte les commerces au Cameroun en un clic.</p>
-        <span class="login-page__topbar-spacer" aria-hidden="true"></span>
+    <div class="container-fluid px-3 px-lg-4">
+        <div class="row w-100 align-items-center g-2">
+            <div class="col-auto">
+                <a href="{% url 'acceuil:accueil' %}" class="btn btn-link text-success text-decoration-none d-inline-flex align-items-center justify-content-center p-0" aria-label="Retour a l'accueil">
+                    <i class="bi bi-arrow-left fs-3" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="col">
+                <p class="mb-0 fw-semibold text-body text-center small">Le marche qui connecte les commerces au Cameroun en un clic.</p>
+            </div>
+            <div class="col-auto d-none d-md-block">
+                <i class="bi bi-arrow-left fs-3 invisible" aria-hidden="true"></i>
+            </div>
+        </div>
     </div>
 </nav>
 {% endblock %}
@@ -26,44 +34,50 @@
 {% block footer %}{% endblock %}
 
 {% block content %}
-<div class="row g-0 min-vh-100 login-page__layout">
-    <aside class="col-md-6 d-none d-md-block login-page__visual">
+<div class="row g-0 min-vh-100">
+    <aside class="col-md-6 d-none d-md-block position-relative">
         <img
             src="https://www.camerounliberty.com/wp-content/uploads/2025/02/Les_nouvelles_tendances_du_commerce_au_Cameroun_qui_vont_vous_etonner.webp"
-            class="login-page__visual-image"
+            class="w-100 h-100 object-fit-cover"
             alt="Scene de commerce dans un marche africain">
     </aside>
 
     <section class="col-12 col-md-6 d-flex align-items-center justify-content-center py-4 px-3 px-lg-5">
-        <div class="card border-0 shadow-sm rounded-4 w-100 login-page__card">
-            <div class="card-body p-4 p-lg-5">
-                <div class="text-center mb-4">
-                    <img src="/assets/logo_cam_retail.png" alt="Cam-Retail Express" class="login-page__logo-img mb-3">
-                </div>
+        <div class="w-100">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-10 col-lg-9 col-xl-8">
+                    <div class="card border-0 shadow-sm rounded-4 w-100">
+                        <div class="card-body p-4 p-lg-5">
+                            <div class="text-center mb-4">
+                                <img src="/assets/logo_cam_retail.png" alt="Cam-Retail Express" class="img-fluid w-50 mb-3">
+                            </div>
 
-                <h1 class="h2 fw-bold text-center text-cmr-text mb-2">Boostez vos ventes, partout au Cameroun.</h1>
+                            <h1 class="h2 fw-bold text-center text-body mb-2">Boostez vos ventes, partout au Cameroun.</h1>
 
-                <form method="post" action="{% url 'connexion:connexion' %}">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.email }}
+                            <form method="post" action="{% url 'connexion:connexion' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    {{ form.email }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.password }}
+                                </div>
+                                <div class="d-grid mb-3">
+                                    <button type="submit" class="btn btn-warning btn-lg fw-semibold">Se Conecter</button>
+                                </div>
+                            </form>
+
+                            <div class="d-flex justify-content-center gap-3 small mb-5">
+                                <a href="#" class="text-decoration-none text-secondary">Continuer avec Google</a>
+                                <a href="#" class="text-decoration-none text-secondary">Facebook</a>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-center gap-2 small text-secondary border-top pt-3">
+                                <i class="bi bi-shield-check fs-5" aria-hidden="true"></i>
+                                <span>Paiement securise par Stripe, MTN Mobile Money et Orange Money</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        {{ form.password }}
-                    </div>
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-warning btn-lg fw-semibold">Se Conecter</button>
-                    </div>
-                </form>
-
-                <div class="d-flex justify-content-center gap-3 small mb-5">
-                    <a href="#" class="text-decoration-none text-secondary">Continuer avec Google</a>
-                    <a href="#" class="text-decoration-none text-secondary">Facebook</a>
-                </div>
-
-                <div class="d-flex align-items-center justify-content-center gap-2 small text-secondary border-top pt-3">
-                    <i class="bi bi-shield-check fs-5" aria-hidden="true"></i>
-                    <span>Paiement securise par Stripe, MTN Mobile Money et Orange Money</span>
                 </div>
             </div>
         </div>

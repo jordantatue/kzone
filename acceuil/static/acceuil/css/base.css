@@ -6,14 +6,6 @@
     --color-cmr-offwhite: #f8fafc;
 }
 
-.bg-cmr-offwhite {
-    background-color: var(--color-cmr-offwhite);
-}
-
-.text-cmr-text {
-    color: var(--color-cmr-text);
-}
-
 .btn-warning {
     --bs-btn-bg: var(--color-cmr-gold);
     --bs-btn-border-color: var(--color-cmr-gold);
