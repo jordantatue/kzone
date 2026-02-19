@@ -15,6 +15,7 @@ env/
 .env/
 .venv/
 venv/
+Lib/
 
 # Environment files
 .env
