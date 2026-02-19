@@ -1,0 +1,100 @@
+{% extends 'acceuil/base.html' %}
+{% load static %}
+
+{% block title %}Mon Profil | Cam-Retail Express{% endblock %}
+
+{% block main_class %}container py-4{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h1 class="h4 mb-3">Tableau de confiance</h1>
+                <div class="mb-2">
+                    <span class="fw-semibold">Badge TrustCam:</span>
+                    {% if profil.badge_trustcam %}
+                        <span class="badge bg-success ms-2">Verifie</span>
+                    {% else %}
+                        <span class="badge bg-secondary ms-2">Non verifie</span>
+                    {% endif %}
+                </div>
+                <div class="mb-2">
+                    <span class="fw-semibold">Note moyenne:</span>
+                    <span class="ms-2">{{ note_moyenne }}/5</span>
+                </div>
+                <div>
+                    <span class="fw-semibold">Nombre d'avis:</span>
+                    <span class="ms-2">{{ total_avis }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Informations personnelles</h2>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="identite">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">{{ identite_form.full_name.label }}</label>
+                            {{ identite_form.full_name }}
+                            {% for error in identite_form.full_name.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Photo de profil</label>
+                            {{ identite_form.photo_profil }}
+                            {% for error in identite_form.photo_profil.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Region</label>
+                            {{ identite_form.region }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Ville</label>
+                            {{ identite_form.ville }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Quartier</label>
+                            {{ identite_form.quartier }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Parametres financiers</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="finance">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Moyen de paiement</label>
+                            {{ finance_form.moyen_paiement_prefere }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Numero de reception</label>
+                            {{ finance_form.numero_paiement }}
+                            {% for error in finance_form.numero_paiement.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">Mettre a jour</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

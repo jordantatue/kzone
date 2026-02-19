@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'connexion.apps.ConnexionConfig',
     'acceuil.apps.AcceuilConfig',
+    'catalogue.apps.CatalogueConfig',
+    'profil.apps.ProfilConfig',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +79,16 @@ WSGI_APPLICATION = 'kzone.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql'
+        if os.getenv('USE_POSTGRES', '0') == '1'
+        else 'django.db.backends.sqlite3',
+        'NAME': os.getenv('POSTGRES_DB', 'cam_retail')
+        if os.getenv('USE_POSTGRES', '0') == '1'
+        else BASE_DIR / 'db.sqlite3',
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'admin'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
 
@@ -119,6 +130,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 ASSETS_URL = 'assets/'
 ASSETS_ROOT = BASE_DIR / 'assets'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field

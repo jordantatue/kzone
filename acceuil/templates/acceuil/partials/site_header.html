@@ -1,0 +1,145 @@
+<nav class="navbar bg-white border-bottom sticky-top">
+    <div class="container-fluid px-3 px-lg-4">
+        <div class="row w-100 g-2 align-items-center flex-nowrap">
+            <div class="col-auto">
+                <a class="navbar-brand mr-2 d-inline-flex align-items-center" href="{% url 'acceuil:accueil' %}">
+                    <img src="/assets/logo_cam_retail.png" alt="Cam-Retail Express" class="img-fluid" width="120">
+                </a>
+            </div>
+
+            <div class="col d-none d-md-block">
+                <form class="w-50" role="search">
+                    <label class="visually-hidden" for="desktop-search">Rechercher un produit</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search" aria-hidden="true"></i></span>
+                        <input id="desktop-search" type="search" class="form-control border-start-0" placeholder="Rechercher un produit, un panier...">
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-auto d-none d-md-flex align-items-center gap-2 gap-lg-3">
+                <div class="dropdown">
+                    <button class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mon compte">
+                        <i class="bi bi-person fs-5" aria-hidden="true"></i>
+                        <span class="d-none d-xl-inline">Mon compte</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'profil:dashboard' %}">
+                                    <i class="bi bi-person-badge" aria-hidden="true"></i>
+                                    <span>Mon profil</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:deconnexion' %}">
+                                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                                    <span>Deconnexion</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:connexion' %}?next={% url 'acceuil:accueil' %}">
+                                    <i class="bi bi-person-check" aria-hidden="true"></i>
+                                    <span>Connexion</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="#">
+                                <i class="bi bi-list-check" aria-hidden="true"></i>
+                                <span>Suivi de commande</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="#" class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1" aria-label="Favoris">
+                    <i class="bi bi-heart fs-5" aria-hidden="true"></i>
+                    <span class="d-none d-xl-inline">Favoris</span>
+                </a>
+
+                <a href="#" class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1" aria-label="Messages">
+                    <i class="bi bi-envelope fs-5" aria-hidden="true"></i>
+                    <span class="d-none d-xl-inline">Messages</span>
+                </a>
+
+                <a href="#" class="btn btn-link text-decoration-none text-dark position-relative d-inline-flex align-items-center gap-2 small py-1 px-1" aria-label="Panier">
+                    <i class="bi bi-cart3 fs-5" aria-hidden="true"></i>
+                    <span class="d-none d-xl-inline">Panier</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">3</span>
+                </a>
+            </div>
+
+            <div class="col d-flex d-md-none justify-content-end">
+                <button class="btn btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNavMenu" aria-controls="mobileNavMenu" aria-label="Ouvrir le menu">
+                    <i class="bi bi-list fs-4" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNavMenu" aria-labelledby="mobileNavMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileNavMenuLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form class="mb-3" role="search">
+            <label class="visually-hidden" for="mobile-search">Rechercher un produit</label>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search" aria-hidden="true"></i></span>
+                <input id="mobile-search" type="search" class="form-control border-start-0" placeholder="Rechercher...">
+            </div>
+        </form>
+
+        <div class="dropdown mb-3">
+            <button class="btn btn-outline-success w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mon compte">
+                <span class="d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-person" aria-hidden="true"></i>
+                    <span>Mon compte</span>
+                </span>
+            </button>
+            <ul class="dropdown-menu w-100 shadow-sm">
+                {% if user.is_authenticated %}
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'profil:dashboard' %}">
+                            <i class="bi bi-person-badge" aria-hidden="true"></i>
+                            <span>Mon profil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:deconnexion' %}">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                            <span>Deconnexion</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:connexion' %}?next={% url 'acceuil:accueil' %}">
+                            <i class="bi bi-person-check" aria-hidden="true"></i>
+                            <span>Connexion</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+                <i class="bi bi-heart" aria-hidden="true"></i>
+                <span>Favoris</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+                <i class="bi bi-envelope" aria-hidden="true"></i>
+                <span>Messages</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+                <i class="bi bi-cart3" aria-hidden="true"></i>
+                <span>Panier</span>
+                <span class="badge rounded-pill bg-warning text-dark ms-auto">3</span>
+            </a>
+        </div>
+    </div>
+</div>

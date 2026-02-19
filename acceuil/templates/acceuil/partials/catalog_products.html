@@ -1,0 +1,36 @@
+<div class="row g-3">
+    {% for produit in produits %}
+        <div class="col-sm-6 col-xl-4">
+            <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h3 class="h6 card-title mb-0">{{ produit.titre }}</h3>
+                        <span class="badge rounded-pill text-bg-light">{{ produit.categorie.nom }}</span>
+                    </div>
+                    <p class="text-muted small mb-1">{{ produit.lieu_vente.region }} - {{ produit.lieu_vente.ville }}</p>
+                    {% if produit.description %}
+                        <p class="small text-body-secondary mb-2">{{ produit.description|truncatechars:80 }}</p>
+                    {% endif %}
+                    {% if produit.produit_retail %}
+                        <p class="small mb-1">
+                            <span class="fw-semibold">Etat:</span> {{ produit.produit_retail.etat|title }}
+                        </p>
+                    {% endif %}
+                    {% if produit.produit_agricole %}
+                        <p class="small mb-1">
+                            <span class="fw-semibold">Origine:</span> {{ produit.produit_agricole.region_origine }}
+                        </p>
+                    {% endif %}
+                    <p class="fw-semibold mb-0">{{ produit.prix }} FCFA</p>
+                </div>
+            </article>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-light border mb-0">
+                Aucun produit ne correspond aux filtres selectionnes.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+

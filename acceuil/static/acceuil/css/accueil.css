@@ -15,3 +15,9 @@
     height: 170px;
     object-fit: cover;
 }
+
+#catalog-sidebar .list-group-item.active {
+    background-color: #009639;
+    border-color: #009639;
+    color: #ffffff;
+}

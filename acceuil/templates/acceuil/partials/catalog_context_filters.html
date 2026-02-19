@@ -1,0 +1,25 @@
+<div class="row g-3">
+    {% if show_retail_filters %}
+        <div class="col-md-4">
+            <label class="form-label" for="catalog-retail-state">Etat du produit (Retail)</label>
+            <select class="form-select" id="catalog-retail-state" name="etat">
+                <option value="">Tous les etats</option>
+                {% for option in etat_options %}
+                    <option value="{{ option }}" {% if filtres.etat == option %}selected{% endif %}>{{ option|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endif %}
+    {% if show_agricole_filters %}
+        <div class="col-md-4">
+            <label class="form-label" for="catalog-origin-region">Region d'origine (Agricole)</label>
+            <select class="form-select" id="catalog-origin-region" name="region_origine">
+                <option value="">Toutes les origines</option>
+                {% for option in region_origine_options %}
+                    <option value="{{ option }}" {% if filtres.region_origine == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endif %}
+</div>
+

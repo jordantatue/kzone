@@ -9,163 +9,17 @@
     <link rel="stylesheet" href="{% static 'acceuil/css/accueil.css' %}">
 {% endblock %}
 
-{% block header %}
-<nav class="navbar bg-white border-bottom sticky-top">
-    <div class="container-fluid px-3 px-lg-4">
-        <div class="row w-100 g-2 align-items-center flex-nowrap">
-            <div class="col-auto">
-                <a class="navbar-brand mr-2 d-inline-flex align-items-center" href="{% url 'acceuil:accueil' %}">
-                    <img src="/assets/logo_cam_retail.png" alt="Cam-Retail Express" class="img-fluid" width="120">
-                </a>
-            </div>
-
-            <div class="col d-none d-md-block">
-                <form class="w-50" role="search">
-                    <label class="visually-hidden" for="desktop-search">Rechercher un produit</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search" aria-hidden="true"></i></span>
-                        <input id="desktop-search" type="search" class="form-control border-start-0" placeholder="Rechercher un produit, un panier...">
-                    </div>
-                </form>
-            </div>
-
-            <div class="col-auto d-none d-md-flex align-items-center gap-2 gap-lg-3">
-                <div class="dropdown">
-                    <button class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mon compte">
-                        <i class="bi bi-person fs-5" aria-hidden="true"></i>
-                        <span class="d-none d-xl-inline">Mon compte</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                        {% if user.is_authenticated %}
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:deconnexion' %}">
-                                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-                                    <span>Deconnexion</span>
-                                </a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:connexion' %}?next={% url 'acceuil:accueil' %}">
-                                    <i class="bi bi-person-check" aria-hidden="true"></i>
-                                    <span>Connexion</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                                <i class="bi bi-list-check" aria-hidden="true"></i>
-                                <span>Suivi de commande</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <a href="#" class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1" aria-label="Favoris">
-                    <i class="bi bi-heart fs-5" aria-hidden="true"></i>
-                    <span class="d-none d-xl-inline">Favoris</span>
-                </a>
-
-                <a href="#" class="btn btn-link text-decoration-none text-dark d-inline-flex align-items-center gap-2 small py-1 px-1" aria-label="Messages">
-                    <i class="bi bi-envelope fs-5" aria-hidden="true"></i>
-                    <span class="d-none d-xl-inline">Messages</span>
-                </a>
-
-                <a href="#" class="btn btn-link text-decoration-none text-dark position-relative d-inline-flex align-items-center gap-2 small py-1 px-1" aria-label="Panier">
-                    <i class="bi bi-cart3 fs-5" aria-hidden="true"></i>
-                    <span class="d-none d-xl-inline">Panier</span>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">3</span>
-                </a>
-            </div>
-
-            <div class="col d-flex d-md-none justify-content-end">
-                <button class="btn btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNavMenu" aria-controls="mobileNavMenu" aria-label="Ouvrir le menu">
-                    <i class="bi bi-list fs-4" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNavMenu" aria-labelledby="mobileNavMenuLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="mobileNavMenuLabel">Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
-    </div>
-    <div class="offcanvas-body">
-        <form class="mb-3" role="search">
-            <label class="visually-hidden" for="mobile-search">Rechercher un produit</label>
-            <div class="input-group">
-                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search" aria-hidden="true"></i></span>
-                <input id="mobile-search" type="search" class="form-control border-start-0" placeholder="Rechercher...">
-            </div>
-        </form>
-
-        <div class="dropdown mb-3">
-            <button class="btn btn-outline-success w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mon compte">
-                <span class="d-inline-flex align-items-center gap-2">
-                    <i class="bi bi-person" aria-hidden="true"></i>
-                    <span>Mon compte</span>
-                </span>
-            </button>
-            <ul class="dropdown-menu w-100 shadow-sm">
-                {% if user.is_authenticated %}
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:deconnexion' %}">
-                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-                            <span>Deconnexion</span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'connexion:connexion' %}?next={% url 'acceuil:accueil' %}">
-                            <i class="bi bi-person-check" aria-hidden="true"></i>
-                            <span>Connexion</span>
-                        </a>
-                    </li>
-                {% endif %}
-                <li>
-                    <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                        <i class="bi bi-list-check" aria-hidden="true"></i>
-                        <span>Suivi de commande</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
-                <i class="bi bi-heart" aria-hidden="true"></i>
-                <span>Favoris</span>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
-                <i class="bi bi-envelope" aria-hidden="true"></i>
-                <span>Messages</span>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
-                <i class="bi bi-cart3" aria-hidden="true"></i>
-                <span>Panier</span>
-                <span class="badge rounded-pill bg-warning text-dark ms-auto">3</span>
-            </a>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
 {% block main_class %}container-fluid px-3 px-lg-4 py-3 flex-grow-1{% endblock %}
 
 {% block content %}
 <div class="row g-3">
-    <aside class="col-lg-2 d-none d-lg-block">
-        <div class="list-group">
-            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold list-group-item-success text-success-emphasis" href="#">Marche Frais</a>
-            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Epicerie</a>
-            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Maison</a>
-            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Mode et Beaute</a>
-            <a class="list-group-item list-group-item-action border-0 rounded-4 mb-2 fw-semibold text-success-emphasis" href="#">Promotions</a>
+    <aside class="col-lg-3 d-none d-lg-block">
+        <div id="catalog-sidebar" class="card border-0 shadow-sm p-3">
+            {% include 'acceuil/partials/catalog_sidebar.html' %}
         </div>
     </aside>
 
-    <section class="col-12 col-lg-10">
+    <section class="col-12 col-lg-9" data-filter-url="{% url 'acceuil:catalogue_filtrer' %}">
         <div class="card border-0 overflow-hidden home-page__hero mb-3">
             <div class="row g-0 align-items-center">
                 <div class="col-md-7 p-4 p-lg-5">
@@ -181,73 +35,49 @@
             </div>
         </div>
 
+        <form id="catalog-filter-form" class="card border-0 shadow-sm p-3 mb-3" method="get">
+            {% csrf_token %}
+            <input type="hidden" name="categorie" id="catalog-category" value="{{ filtres.categorie }}">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label" for="catalog-region">Region</label>
+                    <select class="form-select" name="region" id="catalog-region">
+                        <option value="">Toutes les regions</option>
+                        {% for region in regions %}
+                            <option value="{{ region }}" {% if filtres.region == region %}selected{% endif %}>{{ region }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="catalog-city">Ville</label>
+                    <select class="form-select" name="ville" id="catalog-city">
+                        {% include 'acceuil/partials/catalog_city_options.html' %}
+                    </select>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="btn btn-success" type="submit">Appliquer</button>
+                    <a class="btn btn-outline-secondary" href="{% url 'acceuil:accueil' %}">Reinitialiser</a>
+                </div>
+            </div>
+            <div id="catalog-context-filters" class="mt-3">
+                {% include 'acceuil/partials/catalog_context_filters.html' %}
+            </div>
+        </form>
+
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="h4 fw-bold mb-0">Selection du jour</h2>
-            <span class="badge bg-success-subtle text-success-emphasis">6 produits</span>
+            <h2 class="h4 fw-bold mb-0">Catalogue disponible</h2>
+            <span id="catalog-result-count" class="badge bg-success-subtle text-success-emphasis">{{ total_produits }} produits</span>
         </div>
 
-        <div class="row g-3">
-            <div class="col-sm-6 col-xl-4">
-                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
-                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Panier menagere">
-                    <div class="card-body">
-                        <h3 class="h5 card-title">Panier Menagere Mensuel</h3>
-                        <p class="text-muted mb-1">Frais et essentiels</p>
-                        <p class="fw-semibold mb-0">15 000 FCFA / 25 EUR</p>
-                    </div>
-                </article>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
-                    <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Gamme beaute">
-                    <div class="card-body">
-                        <h3 class="h5 card-title">Gamme Beaute Naturelle</h3>
-                        <p class="text-muted mb-1">Soin premium</p>
-                        <p class="fw-semibold mb-0">20 000 FCFA / 23 EUR</p>
-                    </div>
-                </article>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
-                    <img src="https://images.unsplash.com/photo-1583732236041-91c6bc0ca607?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Materiaux">
-                    <div class="card-body">
-                        <h3 class="h5 card-title">Sac de Ciment et Materiaux</h3>
-                        <p class="text-muted mb-1">Construction</p>
-                        <p class="fw-semibold mb-0">20 000 FCFA / 33 EUR</p>
-                    </div>
-                </article>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
-                    <img src="https://images.unsplash.com/photo-1601758003122-53c40e686a19?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Produit epicerie">
-                    <div class="card-body">
-                        <h3 class="h5 card-title">Epicerie Familiale</h3>
-                        <p class="text-muted mb-1">Produits de base</p>
-                        <p class="fw-semibold mb-0">15 000 FCFA / 13 EUR</p>
-                    </div>
-                </article>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
-                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Cafe camerounais">
-                    <div class="card-body">
-                        <h3 class="h5 card-title">Pack Cafe Camerounais</h3>
-                        <p class="text-muted mb-1">Edition locale</p>
-                        <p class="fw-semibold mb-0">46 000 FCFA / 10 EUR</p>
-                    </div>
-                </article>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden home-page__product-card">
-                    <img src="https://images.unsplash.com/photo-1627483298606-cf7a2f4f67ab?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Jus de bissap">
-                    <div class="card-body">
-                        <h3 class="h5 card-title">Jus de Bissap Naturelle</h3>
-                        <p class="text-muted mb-1">Production artisanale</p>
-                        <p class="fw-semibold mb-0">85 000 FCFA / 10 EUR</p>
-                    </div>
-                </article>
-            </div>
+        <div id="catalog-products">
+            {% include 'acceuil/partials/catalog_products.html' %}
         </div>
     </section>
 </div>
 {% endblock %}
+
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="{% static 'acceuil/js/catalogue_filters.js' %}"></script>
+{% endblock %}
+

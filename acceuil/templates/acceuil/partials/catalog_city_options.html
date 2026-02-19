@@ -1,0 +1,5 @@
+<option value="">Toutes les villes</option>
+{% for ville in villes %}
+    <option value="{{ ville }}" {% if filtres.ville == ville %}selected{% endif %}>{{ ville }}</option>
+{% endfor %}
+

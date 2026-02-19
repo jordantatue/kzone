@@ -11,7 +11,9 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light text-body {% block body_class %}{% endblock %}">
-    {% block header %}{% endblock %}
+    {% block header %}
+        {% include 'acceuil/partials/site_header.html' %}
+    {% endblock %}
 
     <main class="{% block main_class %}container py-4 flex-grow-1{% endblock %}">
         {% if messages %}

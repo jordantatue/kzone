@@ -1,0 +1,32 @@
+<h3 class="h6 fw-bold mb-3">Categories</h3>
+<div class="list-group list-group-flush">
+    {% for item in categories_sidebar %}
+        <a
+            href="#"
+            class="list-group-item list-group-item-action px-2 py-2 rounded-3 mb-2 js-category-link {% if item.is_active %}active{% endif %}"
+            data-category-slug="{{ item.categorie.slug }}"
+        >
+            <div class="d-flex justify-content-between">
+                <span class="fw-semibold">{{ item.categorie.nom }}</span>
+                <span class="badge text-bg-light">{{ item.count }}</span>
+            </div>
+        </a>
+        {% if item.children %}
+            <div class="ms-3 mb-2">
+                {% for child in item.children %}
+                    <a
+                        href="#"
+                        class="d-flex justify-content-between text-decoration-none text-body small py-1 js-category-link {% if child.is_active %}fw-bold text-success{% endif %}"
+                        data-category-slug="{{ child.categorie.slug }}"
+                    >
+                        <span>{{ child.categorie.nom }}</span>
+                        <span class="text-muted">{{ child.count }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% empty %}
+        <p class="text-muted small mb-0">Aucune categorie disponible.</p>
+    {% endfor %}
+</div>
+
