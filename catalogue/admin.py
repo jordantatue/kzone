@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from .models import Categorie, Localisation, Produit, ProduitAgricole, ProduitRetail
+from .models import Categorie, ImageProduit, Localisation, Produit, ProduitAgricole, ProduitRetail
 
 
 @admin.register(Localisation)
@@ -48,5 +48,14 @@ class ProduitAgricoleAdmin(admin.ModelAdmin):
 
     list_display = ("produit", "region_origine", "unite_mesure", "date_recolte")
     list_filter = ("region_origine", "unite_mesure")
+    search_fields = ("produit__titre",)
+
+
+@admin.register(ImageProduit)
+class ImageProduitAdmin(admin.ModelAdmin):
+    """Configuration admin des images produit."""
+
+    list_display = ("produit", "ordre")
+    list_filter = ("produit__categorie",)
     search_fields = ("produit__titre",)
 

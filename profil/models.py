@@ -19,6 +19,12 @@ class ProfilUtilisateur(models.Model):
         MTN_MOMO = "mtn_momo", "MTN Mobile Money"
         MOBILE_MONEY = "mobile_money", "Mobile Money"
 
+    class TypeVendeurChoices(models.TextChoices):
+        """Types de vendeurs affiches dans les cartes catalogue."""
+
+        PARTICULIER = "particulier", "Particulier"
+        PROFESSIONNEL = "professionnel", "Professionnel"
+
     utilisateur = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -36,6 +42,11 @@ class ProfilUtilisateur(models.Model):
         max_length=24,
         choices=MoyenPaiementChoices.choices,
         default=MoyenPaiementChoices.MOBILE_MONEY,
+    )
+    type_vendeur = models.CharField(
+        max_length=20,
+        choices=TypeVendeurChoices.choices,
+        default=TypeVendeurChoices.PARTICULIER,
     )
     numero_paiement = models.CharField(max_length=20, blank=True)
     badge_trustcam = models.BooleanField(default=False)
