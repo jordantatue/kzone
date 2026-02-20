@@ -22,14 +22,25 @@
     <div class="mb-3">
         <a href="{% url 'acceuil:accueil' %}" class="btn btn-sm btn-outline-secondary">
             <i class="bi bi-arrow-left-short" aria-hidden="true"></i>
-            Retour au catalogue
+            Retour aux annonces
         </a>
     </div>
 
     <div class="row g-4">
-        <div class="col-12 col-lg-7">
-            <article class="card border-0 shadow-sm rounded-4 overflow-hidden annonce-detail__media-card">
-                <div class="annonce-detail__main-image-wrap">
+        <div class="col-12 col-lg-8 order-1">
+            <article class="card border-0 shadow-sm rounded-4 p-3 p-lg-4 mb-4">
+                <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-2">
+                    <div>
+                        <h1 class="h3 mb-1">{{ produit.titre }}</h1>
+                        <p class="annonce-detail__price mb-1">{{ produit.prix|floatformat:0 }} FCFA</p>
+                        <p class="text-muted mb-0">{{ produit.lieu_vente.ville }}, {{ produit.lieu_vente.quartier }}</p>
+                    </div>
+                    <span id="annonce-status-badge" class="badge {{ statut_badge_class }}">
+                        {{ produit.get_statut_display }}
+                    </span>
+                </div>
+                <p class="text-muted small mb-3">Mis a jour il y a {{ produit.date_mise_a_jour|timesince }}</p>
+                <div class="annonce-detail__main-image-wrap rounded-4 overflow-hidden">
                     {% if images %}
                         <img
                             id="annonce-main-image"
@@ -57,8 +68,7 @@
                         Plein ecran
                     </button>
                 </div>
-
-                <div class="annonce-detail__thumbs p-3 border-top">
+                <div class="annonce-detail__thumbs mt-3">
                     {% if images %}
                         {% for image in images %}
                             <button
@@ -93,129 +103,48 @@
             </article>
         </div>
 
-        <div class="col-12 col-lg-5">
-            <article class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="card-body p-3 p-lg-4">
-                    <div class="d-flex justify-content-between align-items-start gap-2">
-                        <h1 class="h3 mb-1">{{ produit.titre }}</h1>
-                        <span id="annonce-status-badge" class="badge {{ statut_badge_class }}">
-                            {{ produit.get_statut_display }}
-                        </span>
-                    </div>
-                    <p class="annonce-detail__price mb-1">{{ produit.prix|floatformat:0 }} FCFA</p>
-                    <p class="text-muted mb-1">{{ produit.lieu_vente.ville }}, {{ produit.lieu_vente.quartier }}</p>
-                    <p class="text-muted small mb-3">
-                        Mis a jour il y a {{ produit.date_mise_a_jour|timesince }}
-                    </p>
-
-                    {% if produit.description %}
-                        <p class="mb-3">{{ produit.description }}</p>
-                    {% endif %}
-
-                    <div class="card border-0 bg-light-subtle mb-3">
-                        <div class="card-body">
-                            <h2 class="h6 mb-3">Caracteristiques</h2>
-                            <ul class="list-unstyled mb-0 d-grid gap-2">
-                                <li class="d-flex justify-content-between">
-                                    <span class="text-muted">Categorie</span>
-                                    <span class="fw-semibold">{{ produit.categorie.nom }}</span>
-                                </li>
-                                {% if produit.produit_agricole %}
-                                    <li class="d-flex justify-content-between">
-                                        <span class="text-muted">Region d'origine</span>
-                                        <span class="fw-semibold">{{ produit.produit_agricole.region_origine }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between">
-                                        <span class="text-muted">Unite</span>
-                                        <span class="fw-semibold">{{ produit.produit_agricole.unite_mesure }}</span>
-                                    </li>
-                                    {% if produit.produit_agricole.date_recolte %}
-                                        <li class="d-flex justify-content-between">
-                                            <span class="text-muted">Date de recolte</span>
-                                            <span class="fw-semibold">{{ produit.produit_agricole.date_recolte|date:"d/m/Y" }}</span>
-                                        </li>
-                                    {% endif %}
-                                    {% if produit.produit_agricole.duree_conservation %}
-                                        <li class="d-flex justify-content-between">
-                                            <span class="text-muted">Conservation estimee</span>
-                                            <span class="fw-semibold">{{ produit.produit_agricole.duree_conservation }} jours</span>
-                                        </li>
-                                    {% endif %}
-                                {% endif %}
-                                {% if produit.produit_retail %}
-                                    <li class="d-flex justify-content-between">
-                                        <span class="text-muted">Etat</span>
-                                        <span class="fw-semibold">{{ produit.produit_retail.get_etat_display }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between">
-                                        <span class="text-muted">Marque</span>
-                                        <span class="fw-semibold">{{ produit.produit_retail.marque }}</span>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                            {% if produit.produit_retail and produit.produit_retail.specifications %}
-                                <hr class="my-3">
-                                <div>
-                                    <h3 class="h6 mb-2">Specifications</h3>
-                                    <ul class="list-unstyled mb-0 d-grid gap-2">
-                                        {% for cle, valeur in produit.produit_retail.specifications.items %}
-                                            <li class="d-flex justify-content-between">
-                                                <span class="text-muted">{{ cle|capfirst }}</span>
-                                                <span class="fw-semibold text-end">{{ valeur }}</span>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
+        <aside class="col-12 col-lg-4 order-2">
+            <div class="annonce-detail__sidebar-sticky d-grid gap-3">
+                <article class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-3 p-lg-4">
+                        <h2 class="h6 mb-3">Vendeur de confiance</h2>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            {% if profil_vendeur and profil_vendeur.photo_profil %}
+                                <img
+                                    src="{{ profil_vendeur.photo_profil.url }}"
+                                    alt="Photo du vendeur"
+                                    class="annonce-detail__seller-photo rounded-circle"
+                                    loading="lazy"
+                                >
+                            {% else %}
+                                <div class="annonce-detail__seller-photo annonce-detail__seller-photo--placeholder rounded-circle">
+                                    <i class="bi bi-person-fill" aria-hidden="true"></i>
                                 </div>
                             {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="card border-0 bg-light-subtle mb-3">
-                        <div class="card-body">
-                            <h2 class="h6 mb-3">Vendeur et confiance</h2>
-                            <div class="d-flex align-items-center gap-3 mb-2">
-                                {% if profil_vendeur and profil_vendeur.photo_profil %}
-                                    <img
-                                        src="{{ profil_vendeur.photo_profil.url }}"
-                                        alt="Profil vendeur"
-                                        class="annonce-detail__seller-photo rounded-circle"
-                                        loading="lazy"
-                                    >
+                            <div>
+                                <p class="fw-semibold mb-1">{{ produit.vendeur.username }}</p>
+                                {% if is_vendeur_pro %}
+                                    <span class="badge text-bg-primary">{{ type_vendeur_label }}</span>
                                 {% else %}
-                                    <div class="annonce-detail__seller-photo annonce-detail__seller-photo--placeholder rounded-circle">
-                                        <i class="bi bi-person-fill" aria-hidden="true"></i>
-                                    </div>
+                                    <span class="badge text-bg-light">{{ type_vendeur_label }}</span>
                                 {% endif %}
-                                <div>
-                                    <p class="fw-semibold mb-0">{{ produit.vendeur.username }}</p>
-                                    {% if is_vendeur_pro %}
-                                        <span class="badge text-bg-primary">{{ type_vendeur_label }}</span>
-                                    {% else %}
-                                        <span class="badge text-bg-light">{{ type_vendeur_label }}</span>
-                                    {% endif %}
-                                </div>
                             </div>
-                            <p class="mb-1">
-                                {% for etoile_active in etoiles %}
-                                    <i class="bi {% if etoile_active %}bi-star-fill text-warning{% else %}bi-star text-secondary{% endif %}" aria-hidden="true"></i>
-                                {% endfor %}
-                                <span class="ms-1 fw-semibold">{{ note_moyenne }}</span>
-                                <span class="text-muted">({{ total_avis }} avis)</span>
-                            </p>
-                            <p class="text-muted mb-0">Ville de reference: {{ ville_vendeur }}</p>
                         </div>
+                        <p class="mb-2">
+                            {% for etoile_active in etoiles %}
+                                <i class="bi {% if etoile_active %}bi-star-fill text-warning{% else %}bi-star text-secondary{% endif %}" aria-hidden="true"></i>
+                            {% endfor %}
+                            <span class="ms-1 fw-semibold">{{ note_moyenne }}</span>
+                            <span class="text-muted">({{ total_avis }} avis)</span>
+                        </p>
+                        <p class="text-muted mb-1">Membre depuis {{ membre_depuis }}</p>
+                        <p class="text-muted mb-0">Ville de reference: {{ ville_vendeur }}</p>
                     </div>
+                </article>
 
-                    <div class="d-none d-lg-grid gap-2">
-                        <button
-                            type="button"
-                            class="btn btn-outline-danger js-detail-favorite"
-                            data-product-id="{{ produit.id }}"
-                            aria-pressed="false"
-                        >
-                            <i class="bi bi-heart me-1" aria-hidden="true"></i>
-                            Ajouter aux favoris
-                        </button>
+                <article class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-3 p-lg-4 d-grid gap-2">
+                        <h2 class="h6 mb-2">Contacter le vendeur</h2>
                         <form method="post" action="{% url 'acceuil:annonce_contacter' produit.id %}">
                             {% csrf_token %}
                             <button
@@ -224,41 +153,126 @@
                                 data-action="contact"
                             >
                                 <i class="bi bi-chat-dots me-1" aria-hidden="true"></i>
-                                Contacter le vendeur
+                                Envoyer un message
                             </button>
                         </form>
                         <button
                             type="button"
-                            class="btn btn-success js-annonce-action"
-                            data-action="secure_purchase"
+                            class="btn btn-outline-dark js-annonce-action"
+                            data-action="show_phone"
+                            {% if not numero_contact_disponible %}disabled{% endif %}
                         >
-                            <i class="bi bi-shield-lock me-1" aria-hidden="true"></i>
-                            Acheter avec tiers de confiance
+                            <i class="bi bi-telephone me-1" aria-hidden="true"></i>
+                            Voir le numero
                         </button>
+                        <p id="annonce-phone-value" class="annonce-detail__phone-value d-none mb-0"></p>
                     </div>
+                </article>
+            </div>
+        </aside>
+
+        <div class="col-12 col-lg-8 order-3">
+            <article class="card border-0 shadow-sm rounded-4 mb-3">
+                <div class="card-body p-3 p-lg-4">
+                    <h2 class="h5 mb-3">Description</h2>
+                    {% if produit.description %}
+                        <p class="annonce-detail__description mb-0">{{ produit.description|linebreaksbr }}</p>
+                    {% else %}
+                        <p class="text-muted mb-0">Aucune description fournie pour cette annonce.</p>
+                    {% endif %}
+                </div>
+            </article>
+
+            <article class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-3 p-lg-4">
+                    <h2 class="h5 mb-3">Caracteristiques techniques</h2>
+                    <div class="row row-cols-1 row-cols-md-2 g-2 mb-3">
+                        <div class="col">
+                            <div class="annonce-detail__spec-item">
+                                <span class="text-muted">Categorie</span>
+                                <strong>{{ produit.categorie.nom }}</strong>
+                            </div>
+                        </div>
+                        {% if produit.produit_agricole %}
+                            <div class="col">
+                                <div class="annonce-detail__spec-item">
+                                    <span class="text-muted">Region d'origine</span>
+                                    <strong>{{ produit.produit_agricole.region_origine }}</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="annonce-detail__spec-item">
+                                    <span class="text-muted">Unite de mesure</span>
+                                    <strong>{{ produit.produit_agricole.unite_mesure }}</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="annonce-detail__spec-item">
+                                    <span class="text-muted">Date de recolte</span>
+                                    <strong>
+                                        {% if produit.produit_agricole.date_recolte %}
+                                            {{ produit.produit_agricole.date_recolte|date:"d/m/Y" }}
+                                        {% else %}
+                                            Non renseignee
+                                        {% endif %}
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="annonce-detail__spec-item">
+                                    <span class="text-muted">Duree de conservation</span>
+                                    <strong>
+                                        {% if produit.produit_agricole.duree_conservation %}
+                                            {{ produit.produit_agricole.duree_conservation }} jours
+                                        {% else %}
+                                            Non renseignee
+                                        {% endif %}
+                                    </strong>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if produit.produit_retail %}
+                            <div class="col">
+                                <div class="annonce-detail__spec-item">
+                                    <span class="text-muted">Etat</span>
+                                    <strong>{{ produit.produit_retail.get_etat_display }}</strong>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="annonce-detail__spec-item">
+                                    <span class="text-muted">Marque</span>
+                                    <strong>{{ produit.produit_retail.marque }}</strong>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if produit.produit_retail and produit.produit_retail.specifications %}
+                        <h3 class="h6 mb-2">Specifications detaillees</h3>
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle mb-0">
+                                <tbody>
+                                    {% for cle, valeur in produit.produit_retail.specifications.items %}
+                                        <tr>
+                                            <th class="text-muted fw-normal">{{ cle|capfirst }}</th>
+                                            <td class="text-end">
+                                                {% if valeur == True %}
+                                                    Oui
+                                                {% elif valeur == False %}
+                                                    Non
+                                                {% else %}
+                                                    {{ valeur }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
             </article>
         </div>
-    </div>
-
-    <div class="annonce-detail__mobile-cta d-lg-none">
-        <button
-            type="button"
-            class="btn btn-outline-danger js-detail-favorite"
-            data-product-id="{{ produit.id }}"
-            aria-pressed="false"
-        >
-            <i class="bi bi-heart" aria-hidden="true"></i>
-        </button>
-        <form method="post" action="{% url 'acceuil:annonce_contacter' produit.id %}" class="flex-fill">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-outline-secondary w-100 js-annonce-action" data-action="contact">
-                Contacter
-            </button>
-        </form>
-        <button type="button" class="btn btn-success flex-fill js-annonce-action" data-action="secure_purchase">
-            Achat securise
-        </button>
     </div>
 </section>
 

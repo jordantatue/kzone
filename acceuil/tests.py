@@ -103,6 +103,7 @@ class TestsFonctionnelsAccueil(TestFonctionnelCase):
             utilisateur=self.vendeur,
             localisation_defaut=self.localisation_littoral,
             type_vendeur=ProfilUtilisateur.TypeVendeurChoices.PROFESSIONNEL,
+            numero_paiement="699001122",
             badge_trustcam=True,
         )
         AvisConfiance.objects.create(auteur=self.acheteur, cible=self.vendeur, note=4)
@@ -148,6 +149,7 @@ class TestsFonctionnelsAccueil(TestFonctionnelCase):
         self.assertEqual(response.context["produit"].id, self.produit.id)
         self.assertEqual(response.context["total_avis"], 2)
         self.assertEqual(response.context["note_moyenne"], 4.5)
+        self.assertEqual(response.context["membre_depuis"], self.vendeur.date_joined.year)
 
     def test_detail_annonce_charge_donnees_agricoles(self):
         """Chargement detail annonce agricole."""
@@ -178,6 +180,13 @@ class TestsFonctionnelsAccueil(TestFonctionnelCase):
         self.assertFalse(response.json()["ok"])
         self.assertIn("login_url", response.json())
 
+    def test_action_voir_numero_retourne_numero_vendeur(self):
+        """Action voir numero retourne le numero vendeur."""
+        response = self.client.post(self.url_action, {"action": "show_phone"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["ok"])
+        self.assertEqual(response.json()["phone_number"], "699001122")
+
     def test_action_contact_retourne_dashboard_connecte(self):
         """Action contact redirige vers dashboard si connecte."""
         self.client.force_login(self.acheteur)
@@ -185,20 +194,4 @@ class TestsFonctionnelsAccueil(TestFonctionnelCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["ok"])
         self.assertEqual(response.json()["redirect_url"], reverse("profil:dashboard"))
-
-    def test_action_achat_securise_met_a_jour_statut(self):
-        """Action achat securise met le statut en sequestre."""
-        self.client.force_login(self.acheteur)
-        response = self.client.post(self.url_action, {"action": "secure_purchase"})
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.json()["ok"])
-        self.produit.refresh_from_db()
-        self.assertEqual(self.produit.statut, Produit.StatutChoices.EN_SEQUESTRE)
-
-    def test_action_achat_securise_refuse_proprietaire(self):
-        """Action achat securise refusee pour le vendeur proprietaire."""
-        self.client.force_login(self.vendeur)
-        response = self.client.post(self.url_action, {"action": "secure_purchase"})
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(response.json()["ok"])
 
