@@ -62,6 +62,9 @@
                             <span class="small fw-semibold">{{ produit.produit_agricole.region_origine }}</span>
                         {% endif %}
                     </div>
+                    <a href="{% url 'acceuil:annonce_detail' produit.id %}" class="btn btn-sm btn-outline-success mt-2">
+                        Voir details
+                    </a>
                 </div>
             </article>
         </div>
