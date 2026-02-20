@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 
 from annonces.models import Produit
 from annonces.services import CatalogueService
+from profil.models import ProfilUtilisateur
 from .services import AnnonceDetailService
 
 
@@ -80,7 +81,7 @@ class DetailAnnonceView(TemplateView):
 
 
 class AnnonceActionAjaxView(View):
-    """Traite les actions rapides de la page detail (contact, achat securise)."""
+    """Traite les actions rapides de la page detail (contact, numero)."""
 
     def post(self, request, *args, **kwargs):
         """Execute l'action demandee et retourne un payload JSON minimal."""
@@ -89,6 +90,26 @@ class AnnonceActionAjaxView(View):
             return JsonResponse({"ok": False, "message": "Annonce introuvable."}, status=404)
 
         action = (request.POST.get("action") or "").strip()
+        if action == "show_phone":
+            profil_vendeur = ProfilUtilisateur.objects.filter(utilisateur=produit.vendeur).first()
+            numero_contact = (
+                profil_vendeur.numero_paiement.strip()
+                if profil_vendeur and profil_vendeur.numero_paiement
+                else ""
+            )
+            if not numero_contact:
+                return JsonResponse(
+                    {"ok": False, "message": "Numero de contact indisponible."},
+                    status=404,
+                )
+            return JsonResponse(
+                {
+                    "ok": True,
+                    "message": "Numero du vendeur affiche.",
+                    "phone_number": numero_contact,
+                }
+            )
+
         if not request.user.is_authenticated:
             login_url = reverse("connexion:connexion")
             detail_url = reverse("acceuil:annonce_detail", kwargs={"produit_id": produit.id})
@@ -108,31 +129,6 @@ class AnnonceActionAjaxView(View):
                     "ok": True,
                     "message": "Conversation initiee. Continuez depuis votre espace profil.",
                     "redirect_url": dashboard_url,
-                }
-            )
-
-        if action == "secure_purchase":
-            if request.user == produit.vendeur:
-                return JsonResponse(
-                    {
-                        "ok": False,
-                        "message": "Vous ne pouvez pas acheter votre propre annonce.",
-                    },
-                    status=400,
-                )
-            if produit.statut != Produit.StatutChoices.DISPONIBLE:
-                return JsonResponse(
-                    {"ok": False, "message": "Cette annonce n'est plus disponible."},
-                    status=400,
-                )
-            produit.statut = Produit.StatutChoices.EN_SEQUESTRE
-            produit.save(update_fields=["statut", "date_mise_a_jour"])
-            return JsonResponse(
-                {
-                    "ok": True,
-                    "message": "Procedure de paiement securise initialisee (fonds bloques).",
-                    "new_status": produit.get_statut_display(),
-                    "new_status_value": produit.statut,
                 }
             )
 

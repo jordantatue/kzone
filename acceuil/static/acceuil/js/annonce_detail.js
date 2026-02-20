@@ -9,18 +9,15 @@
             this.$fullscreenImage = $("#annonce-fullscreen-image");
             this.$statusBadge = $("#annonce-status-badge");
             this.$alerts = $("#annonce-alert-container");
+            this.$phoneValue = $("#annonce-phone-value");
             this.actionUrl = this.$root.data("action-url");
-            this.productId = String(this.$root.data("product-id") || "");
-            this.favoritesStorageKey = "kzone_favorites";
             this.bindEvents();
             this.setupCsrfForAjax();
-            this.syncFavoriteButtons();
         },
 
         bindEvents: function () {
             $(document).on("click", ".js-detail-thumb", this.handleThumbnailClick.bind(this));
             $(document).on("show.bs.modal", "#annonceFullscreenModal", this.handleFullscreenOpen.bind(this));
-            $(document).on("click", ".js-detail-favorite", this.handleFavoriteToggle.bind(this));
             $(document).on("click", ".js-annonce-action", this.handleActionClick.bind(this));
         },
 
@@ -51,16 +48,6 @@
             this.$fullscreenImage.attr("alt", this.$mainImage.attr("alt"));
         },
 
-        handleFavoriteToggle: function (event) {
-            event.preventDefault();
-            var isFavorite = this.toggleFavoriteState(this.productId);
-            this.renderFavoriteState(isFavorite);
-            this.showAlert(
-                isFavorite ? "Annonce ajoutee aux favoris." : "Annonce retiree des favoris.",
-                "success"
-            );
-        },
-
         handleActionClick: function (event) {
             var $button = $(event.currentTarget);
             var action = ($button.data("action") || "").trim();
@@ -76,18 +63,10 @@
                 method: "POST",
                 data: { action: action },
                 success: function (response) {
-                    if (response.new_status) {
-                        self.$statusBadge.text(response.new_status);
-                        self.$statusBadge.removeClass("text-bg-success text-bg-warning text-bg-secondary");
-                        if (response.new_status_value === "en_sequestre") {
-                            self.$statusBadge.addClass("text-bg-warning");
-                            $(".js-annonce-action[data-action='secure_purchase']").prop("disabled", true);
-                        } else if (response.new_status_value === "vendu") {
-                            self.$statusBadge.addClass("text-bg-secondary");
-                            $(".js-annonce-action[data-action='secure_purchase']").prop("disabled", true);
-                        } else {
-                            self.$statusBadge.addClass("text-bg-success");
-                        }
+                    if (action === "show_phone") {
+                        self.$phoneValue.text(response.phone_number || "");
+                        self.$phoneValue.removeClass("d-none");
+                        $button.prop("disabled", true).text("Numero affiche");
                     }
 
                     self.showAlert(response.message || "Action executee.", "success");
@@ -104,59 +83,6 @@
                         return;
                     }
                     self.showAlert(payload.message || "Action impossible pour le moment.", "danger");
-                }
-            });
-        },
-
-        getFavoriteIds: function () {
-            try {
-                var raw = window.localStorage.getItem(this.favoritesStorageKey);
-                var ids = raw ? JSON.parse(raw) : [];
-                return Array.isArray(ids) ? ids.map(String) : [];
-            } catch (error) {
-                return [];
-            }
-        },
-
-        setFavoriteIds: function (ids) {
-            try {
-                window.localStorage.setItem(this.favoritesStorageKey, JSON.stringify(ids));
-            } catch (error) {
-                return;
-            }
-        },
-
-        toggleFavoriteState: function (productId) {
-            var ids = this.getFavoriteIds();
-            var exists = ids.indexOf(productId) !== -1;
-            if (exists) {
-                ids = ids.filter(function (id) {
-                    return id !== productId;
-                });
-            } else {
-                ids.push(productId);
-            }
-            this.setFavoriteIds(ids);
-            return !exists;
-        },
-
-        syncFavoriteButtons: function () {
-            var isFavorite = this.getFavoriteIds().indexOf(this.productId) !== -1;
-            this.renderFavoriteState(isFavorite);
-        },
-
-        renderFavoriteState: function (isFavorite) {
-            $(".js-detail-favorite").each(function () {
-                var $button = $(this);
-                var $icon = $button.find("i");
-                $button.attr("aria-pressed", isFavorite ? "true" : "false");
-                $button.toggleClass("btn-danger", isFavorite);
-                $button.toggleClass("btn-outline-danger", !isFavorite);
-                $icon.removeClass("bi-heart bi-heart-fill").addClass(isFavorite ? "bi-heart-fill" : "bi-heart");
-                if ($button.text().trim().length > 0) {
-                    $button.contents().filter(function () {
-                        return this.nodeType === 3;
-                    }).last().replaceWith(isFavorite ? " Retirer des favoris" : " Ajouter aux favoris");
                 }
             });
         },

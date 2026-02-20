@@ -1,7 +1,3 @@
-# Local AI metadata
-.ia/
-.ai/
-
 # Python cache/bytecode
 __pycache__/
 *.py[cod]

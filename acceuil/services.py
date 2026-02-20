@@ -49,6 +49,11 @@ class AnnonceDetailService:
         )
         note_moyenne = float(reputation["note_moyenne"] or 0)
         etoiles_pleines = int(round(note_moyenne))
+        numero_contact_vendeur = (
+            profil_vendeur.numero_paiement.strip()
+            if profil_vendeur and profil_vendeur.numero_paiement
+            else ""
+        )
 
         return {
             "produit": produit,
@@ -70,6 +75,8 @@ class AnnonceDetailService:
             "note_moyenne": round(note_moyenne, 2),
             "total_avis": int(reputation["total_avis"] or 0),
             "etoiles": [index < etoiles_pleines for index in range(5)],
+            "membre_depuis": produit.vendeur.date_joined.year,
+            "numero_contact_disponible": bool(numero_contact_vendeur),
             "statut_badge_class": AnnonceDetailService.STATUT_STYLES.get(
                 produit.statut, "text-bg-light"
             ),
