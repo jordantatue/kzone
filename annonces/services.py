@@ -1,4 +1,4 @@
-"""Services metier pour la navigation et le filtrage du catalogue."""
+"""Services metier pour la navigation et le filtrage des annonces."""
 
 from __future__ import annotations
 

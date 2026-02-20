@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from django import forms
 
-from catalogue.models import Localisation
+from annonces.models import Localisation
 
 from .models import ProfilUtilisateur
 

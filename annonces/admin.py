@@ -1,4 +1,4 @@
-"""Administration des modeles catalogue."""
+"""Administration des modeles annonces."""
 
 from django.contrib import admin
 

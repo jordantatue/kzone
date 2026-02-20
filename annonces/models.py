@@ -1,4 +1,4 @@
-"""Modeles metier pour la navigation et le catalogue produits."""
+"""Modeles metier pour la navigation et la gestion des annonces."""
 
 from django.contrib.auth import get_user_model
 from django.db import models

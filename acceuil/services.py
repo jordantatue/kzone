@@ -7,7 +7,7 @@ from typing import Any
 from django.db.models import Avg, Count, Prefetch
 from django.http import Http404
 
-from catalogue.models import ImageProduit, Produit
+from annonces.models import ImageProduit, Produit
 from profil.models import AvisConfiance, ProfilUtilisateur
 
 

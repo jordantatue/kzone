@@ -8,8 +8,8 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
 
-from catalogue.models import Produit
-from catalogue.services import CatalogueService
+from annonces.models import Produit
+from annonces.services import CatalogueService
 from .services import AnnonceDetailService
 
 

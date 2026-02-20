@@ -16,7 +16,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.text import slugify
 
-from catalogue.models import Categorie, ImageProduit, Localisation, Produit, ProduitAgricole, ProduitRetail
+from annonces.models import Categorie, ImageProduit, Localisation, Produit, ProduitAgricole, ProduitRetail
 from profil.models import ProfilUtilisateur
 
 User = get_user_model()

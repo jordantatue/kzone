@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-from catalogue.models import Localisation
+from annonces.models import Localisation
 
 User = get_user_model()
 
