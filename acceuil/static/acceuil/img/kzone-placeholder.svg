@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" fill="none">
+  <defs>
+    <linearGradient id="kzoneGradient" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#005A2F"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#kzoneGradient)"/>
+  <circle cx="970" cy="190" r="120" fill="#ffffff" fill-opacity="0.12"/>
+  <circle cx="1120" cy="330" r="180" fill="#ffffff" fill-opacity="0.08"/>
+  <circle cx="220" cy="740" r="170" fill="#ffffff" fill-opacity="0.1"/>
+  <text x="600" y="430" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="96" font-weight="700">
+    K-ZONE
+  </text>
+  <text x="600" y="500" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="34" opacity="0.9">
+    Aucune image disponible
+  </text>
+</svg>

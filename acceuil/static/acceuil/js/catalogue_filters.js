@@ -7,14 +7,18 @@
             this.$form = $("#catalog-filter-form");
             this.$container = $("section[data-filter-url]");
             this.filterUrl = this.$container.data("filter-url");
+            this.favoritesStorageKey = "kzone_favorites";
             this.bindEvents();
             this.setupCsrfForAjax();
+            this.syncFavoriteButtons();
+            this.reinitCarousels();
         },
 
         bindEvents: function () {
             this.$form.on("submit", this.handleFormSubmit.bind(this));
             this.$form.on("change", "select", this.handleAutoFilter.bind(this));
             $(document).on("click", ".js-category-link", this.handleCategoryClick.bind(this));
+            $(document).on("click", ".js-favorite-toggle", this.handleFavoriteToggle.bind(this));
         },
 
         setupCsrfForAjax: function () {
@@ -54,10 +58,82 @@
                     $("#catalog-context-filters").html(response.context_filters_html);
                     $("#catalog-city").html(response.city_options_html);
                     $("#catalog-result-count").text(response.total_produits + " produits");
+                    self.syncFavoriteButtons();
+                    self.reinitCarousels();
                 },
                 error: function () {
                     self.showTemporaryError();
                 }
+            });
+        },
+
+        handleFavoriteToggle: function (event) {
+            var button = $(event.currentTarget);
+            var productId = String(button.data("product-id") || "");
+            if (!productId) {
+                return;
+            }
+
+            var favorites = this.getFavoriteIds();
+            var isFavorite = favorites.indexOf(productId) !== -1;
+            if (isFavorite) {
+                favorites = favorites.filter(function (id) {
+                    return id !== productId;
+                });
+            } else {
+                favorites.push(productId);
+            }
+
+            this.setFavoriteIds(favorites);
+            this.setFavoriteButtonState(button, !isFavorite);
+        },
+
+        syncFavoriteButtons: function () {
+            var favorites = this.getFavoriteIds();
+            $(".js-favorite-toggle").each(function () {
+                var button = $(this);
+                var productId = String(button.data("product-id") || "");
+                var isFavorite = favorites.indexOf(productId) !== -1;
+                catalogueModule.setFavoriteButtonState(button, isFavorite);
+            });
+        },
+
+        setFavoriteButtonState: function (button, isFavorite) {
+            var icon = button.find("i");
+            button.toggleClass("is-favorite", isFavorite);
+            button.attr("aria-pressed", isFavorite ? "true" : "false");
+            icon.removeClass("bi-heart bi-heart-fill").addClass(isFavorite ? "bi-heart-fill" : "bi-heart");
+        },
+
+        getFavoriteIds: function () {
+            try {
+                var raw = window.localStorage.getItem(this.favoritesStorageKey);
+                var ids = raw ? JSON.parse(raw) : [];
+                return Array.isArray(ids) ? ids.map(String) : [];
+            } catch (error) {
+                return [];
+            }
+        },
+
+        setFavoriteIds: function (ids) {
+            try {
+                window.localStorage.setItem(this.favoritesStorageKey, JSON.stringify(ids));
+            } catch (error) {
+                return;
+            }
+        },
+
+        reinitCarousels: function () {
+            if (!window.bootstrap || !window.bootstrap.Carousel) {
+                return;
+            }
+
+            $("#catalog-products .carousel").each(function () {
+                window.bootstrap.Carousel.getOrCreateInstance(this, {
+                    interval: false,
+                    ride: false,
+                    touch: true
+                });
             });
         },
 

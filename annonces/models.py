@@ -1,4 +1,4 @@
-"""Modeles metier pour la navigation et le catalogue produits."""
+"""Modeles metier pour la navigation et la gestion des annonces."""
 
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -90,6 +90,7 @@ class Produit(models.Model):
         default=StatutChoices.DISPONIBLE,
     )
     date_creation = models.DateTimeField(auto_now_add=True)
+    date_mise_a_jour = models.DateTimeField(auto_now=True)
 
     class Meta:
         """Contraintes metier sur les produits."""
@@ -99,6 +100,27 @@ class Produit(models.Model):
     def __str__(self) -> str:
         """Retourne le titre du produit."""
         return self.titre
+
+
+class ImageProduit(models.Model):
+    """Images associees a un produit avec un ordre d'affichage explicite."""
+
+    produit = models.ForeignKey(
+        Produit,
+        on_delete=models.CASCADE,
+        related_name="images",
+    )
+    image = models.FileField(upload_to="catalogue/produits/")
+    ordre = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        """Tri des images pour alimenter le carousel dans le bon ordre."""
+
+        ordering = ("ordre", "id")
+
+    def __str__(self) -> str:
+        """Retourne une representation concise de l'image produit."""
+        return f"Image {self.ordre} - {self.produit.titre}"
 
 
 class ProduitAgricole(models.Model):

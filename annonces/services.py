@@ -1,4 +1,4 @@
-"""Services metier pour la navigation et le filtrage du catalogue."""
+"""Services metier pour la navigation et le filtrage des annonces."""
 
 from __future__ import annotations
 
@@ -6,9 +6,16 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any
 
-from django.db.models import Count, QuerySet
+from django.db.models import Count, Prefetch, QuerySet
 
-from .models import Categorie, Localisation, Produit, ProduitAgricole, ProduitRetail
+from .models import (
+    Categorie,
+    ImageProduit,
+    Localisation,
+    Produit,
+    ProduitAgricole,
+    ProduitRetail,
+)
 
 
 @dataclass(frozen=True)
@@ -64,8 +71,12 @@ class CatalogueService:
                 "categorie",
                 "lieu_vente",
                 "vendeur",
+                "vendeur__profil_utilisateur",
                 "produit_agricole",
                 "produit_retail",
+            )
+            .prefetch_related(
+                Prefetch("images", queryset=ImageProduit.objects.order_by("ordre", "id"))
             )
             .filter(statut=Produit.StatutChoices.DISPONIBLE)
             .order_by("-date_creation")

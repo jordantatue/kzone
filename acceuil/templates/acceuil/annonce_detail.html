@@ -1,0 +1,282 @@
+{% extends 'acceuil/base.html' %}
+{% load static %}
+
+{% block title %}{{ produit.titre }} | K-Zone{% endblock %}
+
+{% block body_class %}bg-body-secondary annonce-detail-page{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'acceuil/css/accueil.css' %}">
+{% endblock %}
+
+{% block main_class %}container px-3 px-lg-4 py-3 py-lg-4 flex-grow-1{% endblock %}
+
+{% block content %}
+<section
+    id="annonce-detail-page"
+    data-product-id="{{ produit.id }}"
+    data-action-url="{% url 'acceuil:annonce_action_ajax' produit.id %}"
+>
+    <div id="annonce-alert-container"></div>
+
+    <div class="mb-3">
+        <a href="{% url 'acceuil:accueil' %}" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-left-short" aria-hidden="true"></i>
+            Retour au catalogue
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <article class="card border-0 shadow-sm rounded-4 overflow-hidden annonce-detail__media-card">
+                <div class="annonce-detail__main-image-wrap">
+                    {% if images %}
+                        <img
+                            id="annonce-main-image"
+                            src="{{ images.0.image.url }}"
+                            class="annonce-detail__main-image"
+                            alt="{{ produit.titre }}"
+                            loading="eager"
+                        >
+                    {% else %}
+                        <img
+                            id="annonce-main-image"
+                            src="{% static 'acceuil/img/kzone-placeholder.svg' %}"
+                            class="annonce-detail__main-image"
+                            alt="Image par defaut"
+                            loading="eager"
+                        >
+                    {% endif %}
+                    <button
+                        type="button"
+                        class="btn btn-light shadow-sm annonce-detail__fullscreen-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#annonceFullscreenModal"
+                    >
+                        <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+                        Plein ecran
+                    </button>
+                </div>
+
+                <div class="annonce-detail__thumbs p-3 border-top">
+                    {% if images %}
+                        {% for image in images %}
+                            <button
+                                type="button"
+                                class="btn p-0 border rounded-3 overflow-hidden annonce-detail__thumb {% if forloop.first %}is-active{% endif %} js-detail-thumb"
+                                data-image-url="{{ image.image.url }}"
+                                data-image-alt="{{ produit.titre }} - Vue {{ forloop.counter }}"
+                                aria-label="Voir image {{ forloop.counter }}"
+                            >
+                                <img
+                                    src="{{ image.image.url }}"
+                                    alt="{{ produit.titre }} miniature {{ forloop.counter }}"
+                                    loading="lazy"
+                                >
+                            </button>
+                        {% endfor %}
+                    {% else %}
+                        <button
+                            type="button"
+                            class="btn p-0 border rounded-3 overflow-hidden annonce-detail__thumb is-active"
+                            aria-label="Image par defaut"
+                            disabled
+                        >
+                            <img
+                                src="{% static 'acceuil/img/kzone-placeholder.svg' %}"
+                                alt="Miniature par defaut"
+                                loading="lazy"
+                            >
+                        </button>
+                    {% endif %}
+                </div>
+            </article>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <article class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-3 p-lg-4">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <h1 class="h3 mb-1">{{ produit.titre }}</h1>
+                        <span id="annonce-status-badge" class="badge {{ statut_badge_class }}">
+                            {{ produit.get_statut_display }}
+                        </span>
+                    </div>
+                    <p class="annonce-detail__price mb-1">{{ produit.prix|floatformat:0 }} FCFA</p>
+                    <p class="text-muted mb-1">{{ produit.lieu_vente.ville }}, {{ produit.lieu_vente.quartier }}</p>
+                    <p class="text-muted small mb-3">
+                        Mis a jour il y a {{ produit.date_mise_a_jour|timesince }}
+                    </p>
+
+                    {% if produit.description %}
+                        <p class="mb-3">{{ produit.description }}</p>
+                    {% endif %}
+
+                    <div class="card border-0 bg-light-subtle mb-3">
+                        <div class="card-body">
+                            <h2 class="h6 mb-3">Caracteristiques</h2>
+                            <ul class="list-unstyled mb-0 d-grid gap-2">
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Categorie</span>
+                                    <span class="fw-semibold">{{ produit.categorie.nom }}</span>
+                                </li>
+                                {% if produit.produit_agricole %}
+                                    <li class="d-flex justify-content-between">
+                                        <span class="text-muted">Region d'origine</span>
+                                        <span class="fw-semibold">{{ produit.produit_agricole.region_origine }}</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <span class="text-muted">Unite</span>
+                                        <span class="fw-semibold">{{ produit.produit_agricole.unite_mesure }}</span>
+                                    </li>
+                                    {% if produit.produit_agricole.date_recolte %}
+                                        <li class="d-flex justify-content-between">
+                                            <span class="text-muted">Date de recolte</span>
+                                            <span class="fw-semibold">{{ produit.produit_agricole.date_recolte|date:"d/m/Y" }}</span>
+                                        </li>
+                                    {% endif %}
+                                    {% if produit.produit_agricole.duree_conservation %}
+                                        <li class="d-flex justify-content-between">
+                                            <span class="text-muted">Conservation estimee</span>
+                                            <span class="fw-semibold">{{ produit.produit_agricole.duree_conservation }} jours</span>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                                {% if produit.produit_retail %}
+                                    <li class="d-flex justify-content-between">
+                                        <span class="text-muted">Etat</span>
+                                        <span class="fw-semibold">{{ produit.produit_retail.get_etat_display }}</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <span class="text-muted">Marque</span>
+                                        <span class="fw-semibold">{{ produit.produit_retail.marque }}</span>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                            {% if produit.produit_retail and produit.produit_retail.specifications %}
+                                <hr class="my-3">
+                                <div>
+                                    <h3 class="h6 mb-2">Specifications</h3>
+                                    <ul class="list-unstyled mb-0 d-grid gap-2">
+                                        {% for cle, valeur in produit.produit_retail.specifications.items %}
+                                            <li class="d-flex justify-content-between">
+                                                <span class="text-muted">{{ cle|capfirst }}</span>
+                                                <span class="fw-semibold text-end">{{ valeur }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card border-0 bg-light-subtle mb-3">
+                        <div class="card-body">
+                            <h2 class="h6 mb-3">Vendeur et confiance</h2>
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                {% if profil_vendeur and profil_vendeur.photo_profil %}
+                                    <img
+                                        src="{{ profil_vendeur.photo_profil.url }}"
+                                        alt="Profil vendeur"
+                                        class="annonce-detail__seller-photo rounded-circle"
+                                        loading="lazy"
+                                    >
+                                {% else %}
+                                    <div class="annonce-detail__seller-photo annonce-detail__seller-photo--placeholder rounded-circle">
+                                        <i class="bi bi-person-fill" aria-hidden="true"></i>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <p class="fw-semibold mb-0">{{ produit.vendeur.username }}</p>
+                                    {% if is_vendeur_pro %}
+                                        <span class="badge text-bg-primary">{{ type_vendeur_label }}</span>
+                                    {% else %}
+                                        <span class="badge text-bg-light">{{ type_vendeur_label }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="mb-1">
+                                {% for etoile_active in etoiles %}
+                                    <i class="bi {% if etoile_active %}bi-star-fill text-warning{% else %}bi-star text-secondary{% endif %}" aria-hidden="true"></i>
+                                {% endfor %}
+                                <span class="ms-1 fw-semibold">{{ note_moyenne }}</span>
+                                <span class="text-muted">({{ total_avis }} avis)</span>
+                            </p>
+                            <p class="text-muted mb-0">Ville de reference: {{ ville_vendeur }}</p>
+                        </div>
+                    </div>
+
+                    <div class="d-none d-lg-grid gap-2">
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger js-detail-favorite"
+                            data-product-id="{{ produit.id }}"
+                            aria-pressed="false"
+                        >
+                            <i class="bi bi-heart me-1" aria-hidden="true"></i>
+                            Ajouter aux favoris
+                        </button>
+                        <form method="post" action="{% url 'acceuil:annonce_contacter' produit.id %}">
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="btn btn-outline-secondary w-100 js-annonce-action"
+                                data-action="contact"
+                            >
+                                <i class="bi bi-chat-dots me-1" aria-hidden="true"></i>
+                                Contacter le vendeur
+                            </button>
+                        </form>
+                        <button
+                            type="button"
+                            class="btn btn-success js-annonce-action"
+                            data-action="secure_purchase"
+                        >
+                            <i class="bi bi-shield-lock me-1" aria-hidden="true"></i>
+                            Acheter avec tiers de confiance
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <div class="annonce-detail__mobile-cta d-lg-none">
+        <button
+            type="button"
+            class="btn btn-outline-danger js-detail-favorite"
+            data-product-id="{{ produit.id }}"
+            aria-pressed="false"
+        >
+            <i class="bi bi-heart" aria-hidden="true"></i>
+        </button>
+        <form method="post" action="{% url 'acceuil:annonce_contacter' produit.id %}" class="flex-fill">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-secondary w-100 js-annonce-action" data-action="contact">
+                Contacter
+            </button>
+        </form>
+        <button type="button" class="btn btn-success flex-fill js-annonce-action" data-action="secure_purchase">
+            Achat securise
+        </button>
+    </div>
+</section>
+
+<div class="modal fade" id="annonceFullscreenModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <img id="annonce-fullscreen-image" src="" class="w-100 rounded-3" alt="Vue plein ecran">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="{% static 'acceuil/js/annonce_detail.js' %}"></script>
+{% endblock %}
