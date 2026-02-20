@@ -10,8 +10,6 @@
 - Toujours utiliser des template html réutilisable, modules et fonctions réutilisables
 
 ## Structure du Projet
-
-```
 kzone/
 ├── .ai/                           # Instructions pour toi
 ├── kzone/                         # Configuration Django
@@ -28,7 +26,6 @@ kzone/
 │   ├── admin.py
 │   └── tests.py
 └── assets/                        # Images globales (logos, etc.)
-```
 
 ## Règles Fondamentales
 
@@ -37,7 +34,7 @@ kzone/
 - **services.py** : TOUTE la logique métier (obligatoire dès qu'il y a de la logique)
 - **views.py** : Appelle services, retourne templates (CBV uniquement)
 - **forms.py** : Validation des inputs
-- **front** : Toujours utiliser le bootstrap, fair le css que si et seulement si pas d'autres solution en bootstrap
+- **front** : Toujours utiliser le bootstrap, faire le css que si et seulement si pas d'autres solution en bootstrap
 
 ### 2. Git Flow Process
 Voir `.ai/git-workflow.md` pour le détail. Résumé :
@@ -57,9 +54,31 @@ Voir `.ai/git-workflow.md` pour le détail. Résumé :
 - Charger dans `{% block javascript %}` en fin de template
 - Obligatoire : CSRF token dans tous les appels AJAX
 
-### 5. change model data Process
+### 5. Change model data Process
 Voir `.ai/data_model.md` pour le détail. Résumé :
-- Toujours valider le model de donner avec mi l'humain avant de faire les modification , notamment lors de l'analyse
+- Toujours valider le model de données avec l'humain avant de faire les modifications, notamment lors de l'analyse
+
+## Stratégie de Tests (OBLIGATOIRE)
+
+### Philosophie : on teste le "quoi" métier, pas le "comment" technique
+> Si supprimer le test ne ferait pas rater une vraie règle business → il ne mérite pas d'exister.
+
+### Ce qu'on teste (priorité haute)
+- ✅ Règles métier critiques dans `services.py`
+- ✅ Règles de sécurité (accès refusé, propriétaire interdit d'acheter son propre bien)
+- ✅ Transitions d'état irréversibles (ex: statut → En_Séquestre)
+- ✅ Calculs financiers ou agrégats (ex: note moyenne vendeur)
+- ✅ Cas nominal ET cas d'erreur pour chaque service critique
+
+### Ce qu'on NE teste PAS
+- ❌ "La page charge" (HTTP 200 sur une page publique)
+- ❌ Redirections standards de Django (login_required, etc.) sauf si la règle est métier
+- ❌ Deux tests quasi-identiques avec des données différentes → les fusionner en un seul paramétré
+- ❌ Logique d'affichage (comptage sidebar, ordre des résultats, filtres AJAX génériques)
+
+### Règle de nommage des tests
+Format : `test_[sujet]_[condition]_[résultat_attendu]`
+Un test = une seule règle métier vérifiée.
 
 ## Workflow de Développement
 
@@ -73,17 +92,16 @@ Voir `.ai/data_model.md` pour le détail. Résumé :
 ### Phase 2 : Act
 1. Créer la branche Git
 2. Coder selon les patterns (voir `.ai/patterns/`)
-3. ajouter ou adapter les Tests unitaires et de couverture de code pour le nouveau code
-
+3. Ajouter ou adapter les tests unitaires UNIQUEMENT pour les règles métier nouvelles ou modifiées
 4. Tester avec `python manage.py test`
 5. Type-checker avec `mypy`
 
 ### Phase 3 : Reflect
 1. Lister fichiers modifiés/créés
 2. Migrations générées (`makemigrations --dry-run`)
-3. Tests unitaires et de couverture de code ajoutés
+3. Tests ajoutés (règles métier couvertes, pas de tests triviaux)
 4. Résumé des choix architecturaux
-5. **Le code doit ^tre compréhensible, maintenable par un humain et évolutif pas trop complexe**
+5. **Le code doit être compréhensible, maintenable par un humain et évolutif, pas trop complexe**
 
 ## Commandes Autorisées
 
@@ -103,8 +121,8 @@ Voir `.ai/data_model.md` pour le détail. Résumé :
 
 ## Patterns à Suivre
 Consulte `.ai/patterns/` pour des exemples détaillés :
-- `services.md` : Structure des services
-- `views.md` : CBV avec exemples
+- `services.md` : Structure des services + pattern de test
+- `views.md` : CBV avec exemples + tests d'accès
 - `models.md` : Modèles avec docstrings
 - `frontend.md` : jQuery et AJAX
 
@@ -116,6 +134,8 @@ Consulte `.ai/patterns/` pour des exemples détaillés :
 ❌ Fichiers > 300 lignes
 ❌ Absence de docstrings
 ❌ AJAX sans CSRF token
+❌ Tests qui vérifient qu'une page charge (HTTP 200)
+❌ Tests dupliqués avec données différentes non paramétrés
 
 # ARCHITECTURE ET ORGANISATION DU CODE (DIRECTIVES GÉNÉRALES)
 
@@ -129,7 +149,7 @@ L'agent doit structurer le projet en "Applications Django" correspondant chacune
 - **Éviter les Cycles** : Dans les `models.py`, référencer les clés étrangères par leur nom de chaîne de caractères `app_name.ModelName` pour éviter les imports circulaires.
 - **Exemple** : `vendeur = models.ForeignKey('utilisateurs.Utilisateur', on_delete=models.CASCADE)`.
 
-## 4. MÉTHODOLOGIE DE TRAVAIL DE L'AGENT
+## 3. MÉTHODOLOGIE DE TRAVAIL DE L'AGENT
 1. **Analyse du Domaine** : Identifier l'application responsable du besoin. Si elle n'existe pas, la créer proprement.
 2. **Implémentation Source** : Coder la logique (Modèle, Formulaire) dans l'application métier.
 3. **Consommation** : Importer cette logique dans l'application de destination (celle qui affiche la page à l'utilisateur).

@@ -1,11 +1,11 @@
 # Git Workflow - Projet kzone
 
 ## Règle Absolue
-**JAMAIS coder directement sur `master`, `main` ou `develop`.**
+**JAMAIS coder directement sur `master`, `main`, `integration` ou `develop`.**
 
 ## Nomenclature des Branches
 
-Format strict : `[type]_[fonctionnalité]_[app]` (si beaucoup d'application on choisi le nom de celle qui est au coeur de la fonctionnalité)
+Format strict : `[type]_[fonctionnalité]_[app]`
 
 ### Types autorisés
 - `feat` : Nouvelle fonctionnalité
@@ -30,7 +30,6 @@ refactor_optimisationQueries_clients
 
 ### 1. Avant de coder : Annonce
 Avant toute modification, tu DOIS annoncer :
-
 ```
 "Je vais créer la branche feat_paginationListe_clients depuis master pour ajouter 
 la pagination aux listes de clients."
@@ -48,8 +47,7 @@ git checkout -b feat_paginationListe_clients
 ### 3. Développement
 Code en suivant les conventions de `.ai/AGENTS.md`.
 
-### 4. Commits 
-Faits des commits des changements a la fin de chaque tâche en suivant le format suivant :
+### 4. Commits
 Format des messages de commit :
 ```
 [TYPE] [App(s)] : Description claire
@@ -63,18 +61,12 @@ git commit -m "[FEAT] clients : Ajout pagination dans ListView
 
 - Ajout paramètre paginate_by=25
 - Création template pagination.html
-- Tests unitaires pour pagination"
+- Tests unitaires pour les règles métier impactées"
 
 git commit -m "[FIX] connexion : Correction validation email
 
 - Regex email plus stricte dans forms.py
-- Test avec emails invalides"
-
-git commit -m "[CHORE] clients : Ajout modèle ClientNote
-
-- Migration 0003_clientnote
-- Relation ForeignKey vers Client
-- Admin configuration"
+- Test cas nominal + cas email invalide"
 ```
 
 ### 5. Commit granulaire
@@ -96,13 +88,8 @@ Commit 1: [FEAT] clients : Tout le module clients (50 fichiers)
 ### 6. Tests avant commit
 Avant chaque commit, vérifie :
 ```bash
-# Tests unitaires
 python manage.py test apps.nom_app
-
-# Type checking
 mypy apps/nom_app/
-
-# Format du code
 black apps/nom_app/
 isort apps/nom_app/
 ```
@@ -117,27 +104,27 @@ git push origin feat_paginationListe_clients
 - Description des modifications
 - Liste des fichiers modifiés
 - Screenshots si UI modifiée
-- Tests ajoutés/modifiés
+- Règles métier couvertes par les nouveaux tests
 
 ## Commandes Git Essentielles
 
 ### Vérifier l'état
 ```bash
-git status                    # Fichiers modifiés
-git branch                    # Branche actuelle
-git log --oneline -5          # 5 derniers commits
+git status
+git branch
+git log --oneline -5
 ```
 
 ### Annuler des modifications
 ```bash
-git checkout -- fichier.py    # Annuler modifications non commitées
-git reset HEAD~1              # Annuler dernier commit (garde les modifs)
-git reset --hard HEAD~1       # Annuler dernier commit (supprime les modifs)
+git checkout -- fichier.py
+git reset HEAD~1
+git reset --hard HEAD~1
 ```
 
 ### Commits partiels (recommandé)
 ```bash
-git add -p                    # Commit granulaire (ligne par ligne)
+git add -p
 ```
 
 ### Nettoyage de branche
@@ -145,62 +132,7 @@ Après merge de la PR :
 ```bash
 git checkout master
 git pull origin master
-git branch -d feat_paginationListe_clients  # Suppression locale
-```
-
-## Scénarios Fréquents
-
-### Scénario 1 : Feature complète
-```bash
-git checkout master
-git pull
-git checkout -b feat_exportPDF_factures
-
-# Développement...
-git add apps/factures/services.py
-git commit -m "[FEAT] factures : Service génération PDF"
-
-git add apps/factures/views.py
-git commit -m "[FEAT] factures : Vue export PDF"
-
-git add apps/factures/templates/
-git commit -m "[FEAT] factures : Template PDF"
-
-git push origin feat_exportPDF_factures
-# Créer PR sur GitHub/GitLab
-```
-
-### Scénario 2 : Bug urgent
-```bash
-git checkout master
-git pull
-git checkout -b fix_calculTotal_factures
-
-# Correction du bug
-git add apps/factures/services.py
-git commit -m "[FIX] factures : Correction calcul total TTC
-
-Le calcul ne prenait pas en compte la TVA à 5.5%.
-Ajout test unitaire pour vérifier."
-
-git push origin fix_calculTotal_factures
-# Créer PR urgente
-```
-
-### Scénario 3 : Refactorisation
-```bash
-git checkout master
-git pull
-git checkout -b refactor_optimisationQueries_clients
-
-# Refactorisation
-git add apps/clients/views.py
-git commit -m "[REFACTOR] clients : Ajout select_related
-
-Optimisation des queries pour éviter N+1.
-Temps de réponse réduit de 800ms à 150ms."
-
-git push origin refactor_optimisationQueries_clients
+git branch -d feat_paginationListe_clients
 ```
 
 ## Checklist Avant Push
@@ -212,6 +144,9 @@ git push origin refactor_optimisationQueries_clients
 - [ ] Type-check OK (`mypy`)
 - [ ] Pas de fichiers sensibles (`.env`, `db.sqlite3`)
 - [ ] Migrations dry-run OK si modèles modifiés
+- [ ] Tests ajoutés UNIQUEMENT pour les règles métier nouvelles ou modifiées
+- [ ] Aucun test de type "la page retourne 200" ajouté
+- [ ] Chaque nouveau service a au moins un test cas nominal ET un test cas d'erreur
 
 ## Erreurs à Éviter
 
@@ -221,3 +156,4 @@ git push origin refactor_optimisationQueries_clients
 ❌ Push sans tests
 ❌ Merge sans validation humaine
 ❌ Commits énormes (50+ fichiers)
+❌ Ajouter des tests qui vérifient qu'une page charge

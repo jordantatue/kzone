@@ -82,10 +82,26 @@ SCHEMA CONCEPTUEL DE DONNÉES : CAM-MARKET HUB (TRUSTCAM)
     - mis_a_jour_le : DateTime
 
 ================================================================================
+INVARIANTS MÉTIER À COUVRIR PAR LES TESTS
+================================================================================
+Ces règles définissent le comportement critique du système.
+Chacune DOIT avoir un test unitaire dans le service correspondant.
+Les règles d'affichage (sidebar, filtres, ordre) n'ont PAS besoin de tests.
+
+| Règle métier                                                        | Priorité |
+|---------------------------------------------------------------------|----------|
+| Seule `Transaction` peut modifier le `statut` d'un `Produit`        | CRITIQUE |
+| Un vendeur ne peut pas être acheteur de son propre `Produit`        | CRITIQUE |
+| `statut_paiement = Bloqué_Séquestre` → `statut produit = En_Séquestre` | CRITIQUE |
+| `note_vendeur` = moyenne recalculée à chaque nouvel avis reçu       | HAUTE    |
+| Création automatique du `Profil` au premier accès utilisateur       | HAUTE    |
+| Un `ProduitAgricole` ne peut pas exister sans `Produit` parent      | NORMALE  |
+
+================================================================================
 NOTES POUR L'AGENT IA :
 - L'héritage Produit -> ProduitAgricole utilise 'OneToOneField' masqué par Django.
 - La table 'Transaction' est la seule habilitée à modifier le 'statut' du Produit.
-- Les modèles doivent être implémentées dans les fichiers models.py des applications django en lien fonctionnel principal (ex: model produit dans gestion produit)
+- Les modèles doivent être implémentés dans les fichiers models.py des applications django en lien fonctionnel principal (ex: model produit dans gestion_catalogue)
 ================================================================================
 # DIRECTIVE TECHNIQUE : GESTION DES MÉDIAS (HYBRIDE)
 - **Stockage physique** : Utiliser le système de fichiers (FileSystemStorage).
